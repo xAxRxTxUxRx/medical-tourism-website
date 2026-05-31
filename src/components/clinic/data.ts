@@ -13,10 +13,9 @@ export const GALLERY = [
   `${IMG}/inside_5.jpg`, `${IMG}/inside_6.jpg`, `${IMG}/instruments_1.jpg`, `${IMG}/instruments_2.jpg`,
 ];
 
-// Сертификаты (последний — лицензия врача)
+// Сертификаты
 export const CERTIFICATES = [
-  `${IMG}/certificate_1.jpg`, `${IMG}/certificate_2.jpg`,
-  `${IMG}/certificate_3.jpg`, `${IMG}/certificate_4.jpg`,
+  `${IMG}/certificate_1.jpg`, `${IMG}/certificate_2.jpg`, `${IMG}/certificate_3.jpg`,
 ];
 
 // Общее фото врачей
@@ -31,6 +30,9 @@ export const HOTEL_PHOTOS = [
 export const FEEDBACK_PHOTOS = [
   `${IMG}/feedback_1.jpg`, `${IMG}/feedback_2.jpg`, `${IMG}/feedback_3.jpg`,
 ];
+
+// Видео-отзыв пациента
+export const FEEDBACK_VIDEO = `${IMG}/feedback_video.mp4`;
 
 // Фолбэки больше не нужны — файлы лежат в проекте
 export const IMAGE_FALLBACK: Record<string, string> = {};
@@ -137,7 +139,7 @@ export const DIRECTIONS = [
   {
     icon: 'Flower2',
     title: 'Косметология',
-    image: `${IMG}/uslugi_5.jpg`,
+    image: `${IMG}/cosmetology.png`,
     text: 'Эстетические процедуры, омоложение и контурная пластика лица.',
     items: [
       'Коррекция формы глаз и бровей', 'Веки и мешки под глазами', 'Коррекция формы лица',
@@ -149,7 +151,7 @@ export const DIRECTIONS = [
   {
     icon: 'HeartPulse',
     title: 'Общая медицина',
-    image: `${IMG}/inside_4.jpg`,
+    image: `${IMG}/general_medicine.png`,
     text: 'Современная диагностика и забота о вашем здоровье.',
     items: [
       'Анализы крови', 'Комплексная диагностика', 'ЭКГ', 'УЗИ',
@@ -159,7 +161,7 @@ export const DIRECTIONS = [
   {
     icon: 'Leaf',
     title: 'Китайская медицина (ТКМ)',
-    image: `${IMG}/inside_5.jpg`,
+    image: `${IMG}/chinice_medicine.png`,
     text: 'Традиционные оздоровительные практики с тысячелетней историей.',
     items: [
       'Пульсовая диагностика', 'Фитотерапия', 'Иглорефлексотерапия',
@@ -186,11 +188,12 @@ export const JOURNEY_BONUSES = [
 ];
 
 export const DOCTORS = [
-  { name: 'Доктор Ван Вэй', role: 'Главный врач, имплантолог', exp: '20 лет опыта' },
-  { name: 'Вэй Хунфэй', role: 'Ортопед-стоматолог', exp: '15 лет опыта' },
-  { name: 'Чжао Дун', role: 'Хирург-имплантолог', exp: '14 лет опыта' },
-  { name: 'Лю Лян', role: 'Ортодонт', exp: '12 лет опыта' },
-  { name: 'Ван Лянь', role: 'Эстетическая стоматология', exp: '11 лет опыта' },
+  { name: 'Вэй Хунфэй', role: 'Главный врач, стоматолог-хирург, ортопед', exp: 'Стаж работы 20 лет', photo: `${IMG}/${encodeURIComponent('ВэйХунфэй')}.png` },
+  { name: 'Чжао Дун', role: 'Ведущий врач', exp: '', photo: `${IMG}/${encodeURIComponent('ЧжаоДун')}.png` },
+  { name: 'Лю Лян', role: 'Специалист по реставрации', exp: '', photo: `${IMG}/${encodeURIComponent('ЛюЛян')}.png` },
+  { name: 'Ван Лянь', role: 'Специалист по реставрации', exp: '', photo: `${IMG}/${encodeURIComponent('ВанЛянь')}.png` },
+  { name: 'Линь Хуа', role: 'Терапевт-эндодонтист', exp: '', photo: `${IMG}/${encodeURIComponent('ЛиньХуа')}.png` },
+  { name: 'Хао Синли', role: 'Ортодонт', exp: '', photo: `${IMG}/${encodeURIComponent('ХаоСинли')}.png` },
 ];
 
 export const REVIEWS = [
@@ -199,12 +202,19 @@ export const REVIEWS = [
   { name: 'Марина, Чита', text: 'Профессиональная команда, новая чистая клиника. Косметологию тоже здесь делала — результатом очень довольна.', rating: 5 },
 ];
 
+// Контакты-ссылки
 export const MESSENGERS = [
   { icon: 'Phone', label: 'Телефон', value: '+7 (914) 000-00-00', href: 'tel:+79140000000' },
-  { icon: 'MessageCircle', label: 'WhatsApp', value: 'Написать в WhatsApp', href: '#' },
-  { icon: 'Send', label: 'Telegram', value: 'Написать в Telegram', href: '#' },
-  { icon: 'MessageSquare', label: 'WeChat', value: 'doverie_clinic', href: '#' },
   { icon: 'Mail', label: 'Email', value: 'info@doverie-clinic.ru', href: 'mailto:info@doverie-clinic.ru' },
+];
+
+// QR-коды для связи (отсканируйте в приложении)
+export const QR_CODES = [
+  { label: 'MAX', icon: 'MessageCircle', image: `${IMG}/max.jpg` },
+  { label: 'Telegram', icon: 'Send', image: `${IMG}/tg.jpg` },
+  { label: 'ВКонтакте', icon: 'Users', image: `${IMG}/vk.jpg` },
+  { label: 'WeChat', icon: 'MessageSquare', image: `${IMG}/wechat_1.jpg` },
+  { label: 'WeChat (группа)', icon: 'MessageSquare', image: `${IMG}/wechat_2.jpg` },
 ];
 
 // Все стоматологические услуги с ценами — для калькулятора (price — Китай, ru — Россия)

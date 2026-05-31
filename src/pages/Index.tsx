@@ -9,10 +9,10 @@ import MediaImage from '@/components/clinic/MediaImage';
 import Reveal from '@/components/clinic/Reveal';
 import {
   IMAGES, HERO_VIDEO, IMAGE_FALLBACK,
-  GALLERY, CERTIFICATES, ALL_DOCTORS_PHOTO, HOTEL_PHOTOS, FEEDBACK_PHOTOS,
+  GALLERY, CERTIFICATES, ALL_DOCTORS_PHOTO, HOTEL_PHOTOS, FEEDBACK_PHOTOS, FEEDBACK_VIDEO,
   ADVANTAGES, DENTAL_CATEGORIES, CROWN_TYPES, IMPLANT_STEPS,
   DIRECTIONS, JOURNEY_STEPS, JOURNEY_BONUSES,
-  DOCTORS, REVIEWS, MESSENGERS,
+  DOCTORS, REVIEWS, MESSENGERS, QR_CODES,
 } from '@/components/clinic/data';
 
 const NAV = [
@@ -309,12 +309,12 @@ export default function Index() {
         </Reveal>
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
           {JOURNEY_BONUSES.map((b, i) => (
-            <Reveal key={b.title} delay={i * 80} className="rounded-3xl bg-ivory/95 text-jade p-7 hover-lift">
+            <Reveal key={b.title} delay={i * 80} className="rounded-3xl bg-white text-jade p-7 hover-lift">
               <div className="w-12 h-12 rounded-2xl bg-gold/15 flex items-center justify-center mb-4">
                 <Icon name={b.icon} size={22} className="text-gold" />
               </div>
-              <h4 className="font-display text-xl mb-2">{b.title}</h4>
-              <p className="text-sm text-muted-foreground">{b.text}</p>
+              <h4 className="font-display text-xl mb-2 text-jade">{b.title}</h4>
+              <p className="text-sm text-jade/70">{b.text}</p>
             </Reveal>
           ))}
         </div>
@@ -334,13 +334,13 @@ export default function Index() {
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {DOCTORS.map((d, i) => (
             <Reveal key={d.name} delay={(i % 3) * 80} className="group rounded-3xl overflow-hidden glass-card hover-lift">
-              <div className="aspect-[4/5] overflow-hidden">
-                <MediaImage src={IMAGES.doctor} alt={d.name} className="w-full h-full object-cover group-hover:scale-105 transition duration-700" />
+              <div className="aspect-[4/5] overflow-hidden bg-cream">
+                <MediaImage src={d.photo} alt={d.name} className="w-full h-full object-cover group-hover:scale-105 transition duration-700" />
               </div>
               <div className="p-6">
                 <h3 className="font-display text-2xl text-jade">{d.name}</h3>
                 <p className="text-sm text-gold font-medium">{d.role}</p>
-                <p className="text-sm text-muted-foreground mt-1">{d.exp}</p>
+                {d.exp && <p className="text-sm text-muted-foreground mt-1">{d.exp}</p>}
               </div>
             </Reveal>
           ))}
@@ -415,6 +415,20 @@ export default function Index() {
             </Reveal>
           ))}
         </div>
+
+        {/* Видео-отзыв */}
+        <Reveal className="mt-8 max-w-3xl mx-auto">
+          <div className="rounded-[2rem] overflow-hidden shadow-2xl border border-gold/20 aspect-video">
+            <video
+              src={FEEDBACK_VIDEO}
+              controls
+              playsInline
+              poster={FEEDBACK_PHOTOS[0]}
+              className="w-full h-full object-cover bg-jade"
+            />
+          </div>
+          <p className="text-center text-sm text-muted-foreground mt-3">Видео-отзыв нашего пациента</p>
+        </Reveal>
       </Section>
 
       {/* APPOINTMENT + CONTACTS */}
@@ -428,48 +442,65 @@ export default function Index() {
               </div>
               <div className="grid sm:grid-cols-2 gap-4">
                 <div className="relative">
-                  <Icon name="User" size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-jade/40" />
-                  <Input required placeholder="Имя" className="bg-cream/40 border-border rounded-xl h-12 pl-11" />
+                  <Icon name="User" size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-jade/40 z-10" />
+                  <Input required placeholder="Имя" className="bg-cream/40 border-border rounded-xl h-12 pl-11 text-jade placeholder:text-jade/40" />
                 </div>
                 <div className="relative">
-                  <Icon name="Phone" size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-jade/40" />
-                  <Input required placeholder="Телефон" className="bg-cream/40 border-border rounded-xl h-12 pl-11" />
+                  <Icon name="Phone" size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-jade/40 z-10" />
+                  <Input required placeholder="Телефон" className="bg-cream/40 border-border rounded-xl h-12 pl-11 text-jade placeholder:text-jade/40" />
                 </div>
               </div>
               <div className="grid sm:grid-cols-2 gap-4">
                 <div className="relative">
-                  <Icon name="MapPin" size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-jade/40" />
-                  <Input placeholder="Город" className="bg-cream/40 border-border rounded-xl h-12 pl-11" />
+                  <Icon name="MapPin" size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-jade/40 z-10" />
+                  <Input placeholder="Город" className="bg-cream/40 border-border rounded-xl h-12 pl-11 text-jade placeholder:text-jade/40" />
                 </div>
                 <div className="relative">
-                  <Icon name="Stethoscope" size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-jade/40" />
-                  <Input placeholder="Желаемое лечение" className="bg-cream/40 border-border rounded-xl h-12 pl-11" />
+                  <Icon name="Stethoscope" size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-jade/40 z-10" />
+                  <Input placeholder="Желаемое лечение" className="bg-cream/40 border-border rounded-xl h-12 pl-11 text-jade placeholder:text-jade/40" />
                 </div>
               </div>
               <div className="relative">
-                <Icon name="MessageCircle" size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-jade/40" />
-                <Input placeholder="Мессенджер для связи" className="bg-cream/40 border-border rounded-xl h-12 pl-11" />
+                <Icon name="MessageCircle" size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-jade/40 z-10" />
+                <Input placeholder="Мессенджер для связи" className="bg-cream/40 border-border rounded-xl h-12 pl-11 text-jade placeholder:text-jade/40" />
               </div>
-              <Textarea placeholder="Комментарий" className="bg-cream/40 border-border rounded-xl min-h-24" />
+              <Textarea placeholder="Комментарий" className="bg-cream/40 border-border rounded-xl min-h-24 text-jade placeholder:text-jade/40" />
               <Button type="submit" className="w-full bg-jade text-ivory rounded-full h-12 text-base hover:opacity-90 shadow-lg shadow-jade/20">Отправить заявку</Button>
               <p className="text-xs text-jade/50 text-center">Нажимая кнопку, вы соглашаетесь с обработкой персональных данных</p>
             </form>
           </Reveal>
 
           <Reveal delay={120} id="contacts" as="div" className="space-y-4">
-            <div className="space-y-3">
+            <div className="grid sm:grid-cols-2 gap-3">
               {MESSENGERS.map((m) => (
                 <a key={m.label} href={m.href} className="bg-ivory/[0.08] border border-ivory/25 rounded-2xl p-5 flex items-center gap-4 hover:bg-ivory/15 transition group">
                   <div className="w-11 h-11 rounded-xl bg-gold/25 flex items-center justify-center shrink-0 group-hover:bg-gold/40 transition">
                     <Icon name={m.icon} size={20} className="text-gold" />
                   </div>
-                  <div>
+                  <div className="min-w-0">
                     <p className="text-xs text-ivory/70">{m.label}</p>
-                    <p className="font-medium text-ivory">{m.value}</p>
+                    <p className="font-medium text-ivory truncate">{m.value}</p>
                   </div>
                 </a>
               ))}
             </div>
+
+            {/* QR-коды */}
+            <div className="bg-ivory/[0.08] border border-ivory/25 rounded-2xl p-5">
+              <p className="font-medium text-ivory mb-1">Свяжитесь с нами по QR-коду</p>
+              <p className="text-xs text-ivory/70 mb-4">Отсканируйте камерой телефона в нужном приложении</p>
+              <div className="grid grid-cols-3 sm:grid-cols-5 gap-3">
+                {QR_CODES.map((q) => (
+                  <div key={q.label} className="text-center">
+                    <div className="rounded-xl overflow-hidden bg-white p-1.5 aspect-square">
+                      <MediaImage src={q.image} alt={`QR ${q.label}`} className="w-full h-full object-contain" />
+                    </div>
+                    <p className="text-[11px] text-ivory/85 mt-1.5 leading-tight">{q.label}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+
             <div className="bg-ivory/[0.08] border border-ivory/25 rounded-2xl p-5">
               <div className="flex items-center gap-2 mb-2"><Icon name="MapPin" size={18} className="text-gold" /><span className="font-medium text-ivory">Адрес</span></div>
               <p className="text-sm text-ivory/80">Китай, г. Хэйхэ, в 700 м от пункта пропуска напротив г. Благовещенск</p>
