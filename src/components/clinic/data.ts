@@ -1,29 +1,43 @@
-// Все фото и видео берутся из папки проекта: public/media/
-// Положи свои файлы в эту папку с такими же именами — они появятся на сайте.
-// FALLBACK используются автоматически, пока ты не загрузил свои файлы.
-const FALLBACK = {
-  lobby: 'https://cdn.poehali.dev/projects/3ff9815d-6a53-4b2e-baa5-723a5e088a80/files/d422d50a-17ba-49cb-98c9-18c6e0d06574.jpg',
-  room: 'https://cdn.poehali.dev/projects/3ff9815d-6a53-4b2e-baa5-723a5e088a80/files/2793e945-e4be-487d-987e-dc88dd52e738.jpg',
-  doctor: 'https://cdn.poehali.dev/projects/3ff9815d-6a53-4b2e-baa5-723a5e088a80/files/ad9b4019-0a11-4fa2-8883-c9d73afefba5.jpg',
-};
+// Все фото и видео берутся из папки проекта: public/images/
+const IMG = '/images';
 
 export const IMAGES = {
-  lobby: '/media/lobby.jpg',
-  room: '/media/room.jpg',
-  doctor: '/media/doctor.jpg',
+  lobby: `${IMG}/inside_1.jpg`,
+  room: `${IMG}/inside_2.jpg`,
+  doctor: `${IMG}/inside_3.jpg`,
 };
 
-// Запасные адреса на случай, если файла ещё нет в папке public/media
-export const IMAGE_FALLBACK: Record<string, string> = {
-  '/media/lobby.jpg': FALLBACK.lobby,
-  '/media/room.jpg': FALLBACK.room,
-  '/media/doctor.jpg': FALLBACK.doctor,
-};
+// Интерьер клиники (галерея)
+export const GALLERY = [
+  `${IMG}/inside_1.jpg`, `${IMG}/inside_2.jpg`, `${IMG}/inside_3.jpg`, `${IMG}/inside_4.jpg`,
+  `${IMG}/inside_5.jpg`, `${IMG}/inside_6.jpg`, `${IMG}/instruments_1.jpg`, `${IMG}/instruments_2.jpg`,
+];
 
-// Видео: положи файлы в public/media/ . Если файла нет — покажется фото клиники.
-export const HERO_VIDEO = '/media/hero.mp4';
-export const ABOUT_VIDEO = '/media/about.mp4';
-export const REVIEW_VIDEOS = ['/media/review-1.mp4', '/media/review-2.mp4'];
+// Сертификаты
+export const CERTIFICATES = [
+  `${IMG}/certificate_1.jpg`, `${IMG}/certificate_2.jpg`, `${IMG}/certificate_3.jpg`,
+];
+
+// Общее фото врачей
+export const ALL_DOCTORS_PHOTO = `${IMG}/all_doctors.jpg`;
+
+// Фото отеля и пациентов (раздел "Как мы работаем")
+export const HOTEL_PHOTOS = [
+  `${IMG}/hotel_1.jpg`, `${IMG}/hotel_2.jpg`, `${IMG}/hotel_3.jpg`, `${IMG}/hotel_4.jpg`,
+];
+
+// Фото довольных пациентов (раздел "Отзывы")
+export const FEEDBACK_PHOTOS = [
+  `${IMG}/feedback_1.jpg`, `${IMG}/feedback_2.jpg`, `${IMG}/feedback_3.jpg`,
+];
+
+// Фолбэки больше не нужны — файлы лежат в проекте
+export const IMAGE_FALLBACK: Record<string, string> = {};
+
+// Видео
+export const HERO_VIDEO = `${IMG}/main_video.mp4`;
+export const ABOUT_VIDEO = `${IMG}/main_video.mp4`;
+export const REVIEW_VIDEOS: string[] = [];
 
 export const ADVANTAGES = [
   { icon: 'Landmark', title: 'Государственная клиника', text: 'Официальный статус и гарантии качества от государства Китая' },
@@ -42,7 +56,7 @@ export const DENTAL_CATEGORIES = [
     id: 'therapy',
     icon: 'Stethoscope',
     title: 'Терапевтическая стоматология',
-    image: IMAGES.room,
+    image: `${IMG}/uslugi_1.jpg`,
     services: [
       { name: 'Лечение кариеса', desc: 'Бережное лечение с сохранением здоровых тканей зуба', price: 1800 },
       { name: 'Лечение эрозии эмали', desc: 'Восстановление и укрепление эмали зуба', price: 2000 },
@@ -54,7 +68,7 @@ export const DENTAL_CATEGORIES = [
     id: 'orthopedics',
     icon: 'Crown',
     title: 'Ортопедическая стоматология',
-    image: IMAGES.lobby,
+    image: `${IMG}/uslugi_2.jpg`,
     intro: 'Сочетаем функциональность, комфорт и эстетику. Используем передовые технологии и материалы для идеального соответствия.',
     services: [
       { name: 'Металлокерамическая коронка', desc: 'Популярный выбор — сочетание прочности и эстетики', price: 2600 },
@@ -66,7 +80,7 @@ export const DENTAL_CATEGORIES = [
     id: 'implant',
     icon: 'Drill',
     title: 'Имплантация',
-    image: IMAGES.doctor,
+    image: `${IMG}/uslugi_3.jpg`,
     intro: 'Единственный метод, который предотвращает атрофию костной ткани. Документированная выживаемость имплантов 98–99%.',
     services: [
       { name: 'Имплантация «под ключ»', desc: 'Титановый имплант + абатмент + коронка', price: 28000 },
@@ -77,7 +91,7 @@ export const DENTAL_CATEGORIES = [
     id: 'prosthetics',
     icon: 'Layers',
     title: 'Съёмное протезирование',
-    image: IMAGES.room,
+    image: `${IMG}/uslugi_4.jpg`,
     intro: 'Протезы, которые пациент может самостоятельно снимать и устанавливать.',
     services: [
       { name: 'Бюгельный протез', desc: 'Прочная конструкция из металла и акрила, равномерно распределяет нагрузку', price: 18600 },
@@ -92,7 +106,7 @@ export const CROWN_TYPES = [
   {
     icon: 'Gem',
     title: 'Цельнокерамические (диоксид циркония)',
-    image: IMAGES.room,
+    image: `${IMG}/uslugi_2.jpg`,
     text: 'Один из самых прочных и эстетичных вариантов восстановления. Высокая прозрачность имитирует естественный цвет зубов.',
     points: ['Высокая прочность и долговечность', 'Незаметны в полости рта', 'Биосовместимы, без аллергии', 'Лёгкие, не нагружают дёсны'],
     price: 8800,
@@ -100,7 +114,7 @@ export const CROWN_TYPES = [
   {
     icon: 'Shield',
     title: 'Металлокерамические',
-    image: IMAGES.lobby,
+    image: `${IMG}/uslugi_3.jpg`,
     text: 'Металлический каркас и керамическое покрытие: прочность металла и эстетика керамики. Изготавливаются по индивидуальному слепку.',
     points: ['Прочность для жевательных нагрузок', 'Эстетика, близкая к натуральной', 'Универсальны для передних и жевательных зубов', 'Быстрая адаптация и комфорт'],
     price: 2600,
@@ -118,6 +132,7 @@ export const IMPLANT_STEPS = [
 ];
 
 // ——— ДРУГИЕ НАПРАВЛЕНИЯ ———
+export const COSMETOLOGY_PHOTO = `${IMG}/uslugi_5.jpg`;
 export const COSMETOLOGY = [
   'Коррекция формы глаз и бровей', 'Веки и мешки под глазами', 'Коррекция формы лица',
   'Подтяжка лица нитями', 'Нитевая ринопластика', 'Ринопластика',

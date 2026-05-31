@@ -8,7 +8,8 @@ import Calculator from '@/components/clinic/Calculator';
 import MediaImage from '@/components/clinic/MediaImage';
 import Reveal from '@/components/clinic/Reveal';
 import {
-  IMAGES, HERO_VIDEO, ABOUT_VIDEO, REVIEW_VIDEOS, IMAGE_FALLBACK,
+  IMAGES, HERO_VIDEO, ABOUT_VIDEO, IMAGE_FALLBACK,
+  GALLERY, CERTIFICATES, ALL_DOCTORS_PHOTO, HOTEL_PHOTOS, FEEDBACK_PHOTOS, COSMETOLOGY_PHOTO,
   ADVANTAGES, DENTAL_CATEGORIES, CROWN_TYPES, IMPLANT_STEPS,
   COSMETOLOGY, OTHER_MEDICINE, JOURNEY_STEPS, JOURNEY_BONUSES,
   DOCTORS, REVIEWS, MESSENGERS,
@@ -275,7 +276,7 @@ export default function Index() {
         <div className="grid lg:grid-cols-3 gap-6">
           <Reveal className="lg:col-span-1 glass-card rounded-3xl overflow-hidden hover-lift">
             <div className="aspect-[16/10] overflow-hidden">
-              <MediaImage src={IMAGES.room} alt="Косметология" className="w-full h-full object-cover" />
+              <MediaImage src={COSMETOLOGY_PHOTO} alt="Косметология" className="w-full h-full object-cover" />
             </div>
             <div className="p-7">
               <div className="flex items-center gap-3 mb-4">
@@ -334,13 +335,13 @@ export default function Index() {
           ))}
         </div>
 
-        {/* Фото клиентов и отеля */}
+        {/* Фото отеля и проживания */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-12">
           {[
-            { src: IMAGES.doctor, cap: 'Наши пациенты' },
-            { src: IMAGES.lobby, cap: 'Сопровождение' },
-            { src: IMAGES.room, cap: 'Отель с завтраком' },
-            { src: IMAGES.lobby, cap: 'Комфортное проживание' },
+            { src: HOTEL_PHOTOS[0], cap: 'Отель с завтраком' },
+            { src: HOTEL_PHOTOS[1], cap: 'Комфортные номера' },
+            { src: HOTEL_PHOTOS[2], cap: 'Уютная атмосфера' },
+            { src: HOTEL_PHOTOS[3], cap: 'Всё включено' },
           ].map((p, i) => (
             <Reveal key={i} delay={i * 70} className="rounded-3xl overflow-hidden relative group aspect-[4/5]">
               <MediaImage src={p.src} alt={p.cap} className="w-full h-full object-cover group-hover:scale-105 transition duration-700" />
@@ -372,7 +373,7 @@ export default function Index() {
         {/* Общее фото команды */}
         <Reveal className="mt-10 rounded-[2rem] overflow-hidden relative hover-lift">
           <div className="aspect-[21/9] overflow-hidden">
-            <MediaImage src={IMAGES.lobby} alt="Команда врачей клиники" className="w-full h-full object-cover" />
+            <MediaImage src={ALL_DOCTORS_PHOTO} alt="Команда врачей клиники" className="w-full h-full object-cover" />
           </div>
           <div className="absolute inset-0 bg-gradient-to-t from-jade/85 to-transparent flex items-end p-8">
             <div className="text-ivory">
@@ -385,8 +386,8 @@ export default function Index() {
 
       {/* GALLERY */}
       <Section id="gallery" eyebrow="Галерея" title="Атмосфера клиники" sub="Интерьеры, кабинеты, оборудование и зоны отдыха для пациентов." className="gradient-soft pattern-clouds">
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-4 auto-rows-[260px]">
-          {[IMAGES.lobby, IMAGES.room, IMAGES.doctor, IMAGES.room, IMAGES.lobby, IMAGES.doctor, IMAGES.lobby, IMAGES.room].map((src, i) => (
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-4 auto-rows-[300px]">
+          {GALLERY.map((src, i) => (
             <Reveal key={i} delay={(i % 3) * 60} className={`rounded-3xl overflow-hidden group ${i === 0 ? 'md:row-span-2 md:col-span-2' : ''} ${i === 5 ? 'md:row-span-2' : ''}`}>
               <MediaImage src={src} alt="Галерея клиники" className="w-full h-full object-cover group-hover:scale-105 transition duration-700" />
             </Reveal>
@@ -398,11 +399,11 @@ export default function Index() {
           <h3 className="font-display text-3xl md:text-4xl text-jade">Сертификаты и лицензии</h3>
           <p className="text-muted-foreground mt-3">Подтверждение качества и официального статуса клиники.</p>
         </Reveal>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-5">
-          {[0, 1, 2, 3].map((i) => (
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-5 max-w-4xl mx-auto">
+          {CERTIFICATES.map((src, i) => (
             <Reveal key={i} delay={i * 70} className="glass-card rounded-2xl p-3 hover-lift">
               <div className="aspect-[3/4] overflow-hidden rounded-xl bg-cream">
-                <MediaImage src={[IMAGES.room, IMAGES.lobby, IMAGES.doctor, IMAGES.room][i]} alt={`Сертификат ${i + 1}`} className="w-full h-full object-cover" />
+                <MediaImage src={src} alt={`Сертификат ${i + 1}`} className="w-full h-full object-contain" />
               </div>
               <p className="text-center text-sm text-muted-foreground mt-3">Сертификат №{i + 1}</p>
             </Reveal>
@@ -426,15 +427,15 @@ export default function Index() {
           ))}
         </div>
 
-        {/* Видео-отзывы */}
+        {/* Фото довольных пациентов */}
         <Reveal className="text-center mt-16 mb-8">
-          <h3 className="font-display text-3xl md:text-4xl text-jade">Видео-отзывы</h3>
-          <p className="text-muted-foreground mt-3">Истории пациентов о лечении в нашей клинике.</p>
+          <h3 className="font-display text-3xl md:text-4xl text-jade">Наши счастливые пациенты</h3>
+          <p className="text-muted-foreground mt-3">Люди, которые доверили нам свою улыбку.</p>
         </Reveal>
-        <div className="grid md:grid-cols-2 gap-6">
-          {REVIEW_VIDEOS.map((v, i) => (
-            <Reveal key={i} delay={i * 100} className="rounded-[2rem] overflow-hidden shadow-xl border border-gold/20 aspect-video hover-lift">
-              <AutoVideo src={v} poster={[IMAGES.doctor, IMAGES.room][i]} className="w-full h-full object-cover" />
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+          {FEEDBACK_PHOTOS.map((src, i) => (
+            <Reveal key={i} delay={i * 100} className="rounded-[2rem] overflow-hidden shadow-xl border border-gold/20 aspect-[4/5] hover-lift">
+              <MediaImage src={src} alt={`Пациент ${i + 1}`} className="w-full h-full object-cover" />
             </Reveal>
           ))}
         </div>
