@@ -5,8 +5,9 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { toast } from 'sonner';
 import Calculator from '@/components/clinic/Calculator';
+import MediaImage from '@/components/clinic/MediaImage';
 import {
-  IMAGES, HERO_VIDEO, ADVANTAGES, SERVICE_GROUPS, PRICES, IMPLANT_STEPS,
+  IMAGES, HERO_VIDEO, IMAGE_FALLBACK, ADVANTAGES, SERVICE_GROUPS, PRICES, IMPLANT_STEPS,
   JOURNEY, DOCTORS, REVIEWS, MESSENGERS,
 } from '@/components/clinic/data';
 
@@ -94,12 +95,12 @@ export default function Index() {
               muted
               loop
               playsInline
-              poster={IMAGES.lobby}
+              poster={IMAGE_FALLBACK[IMAGES.lobby] || IMAGES.lobby}
               onError={() => setVideoFailed(true)}
               className="w-full h-full object-cover"
             />
           ) : (
-            <img src={IMAGES.lobby} alt="Клиника Доверие" className="w-full h-full object-cover" />
+            <MediaImage src={IMAGES.lobby} alt="Клиника Доверие" className="w-full h-full object-cover" />
           )}
           <div className="absolute inset-0 bg-gradient-to-b from-jade/85 via-jade/65 to-jade/90" />
         </div>
@@ -233,7 +234,7 @@ export default function Index() {
           {DOCTORS.map((d) => (
             <div key={d.name} className="group rounded-3xl overflow-hidden glass-card hover-lift">
               <div className="aspect-[4/5] overflow-hidden">
-                <img src={IMAGES.doctor} alt={d.name} className="w-full h-full object-cover group-hover:scale-105 transition duration-700" />
+                <MediaImage src={IMAGES.doctor} alt={d.name} className="w-full h-full object-cover group-hover:scale-105 transition duration-700" />
               </div>
               <div className="p-6">
                 <h3 className="font-display text-2xl text-jade">{d.name}</h3>
@@ -250,7 +251,7 @@ export default function Index() {
         <div className="grid grid-cols-2 md:grid-cols-3 gap-4 auto-rows-[220px]">
           {[IMAGES.lobby, IMAGES.room, IMAGES.doctor, IMAGES.room, IMAGES.lobby, IMAGES.doctor].map((src, i) => (
             <div key={i} className={`rounded-3xl overflow-hidden group ${i === 0 ? 'md:row-span-2 md:col-span-2' : ''}`}>
-              <img src={src} alt="Галерея клиники" className="w-full h-full object-cover group-hover:scale-105 transition duration-700" />
+              <MediaImage src={src} alt="Галерея клиники" className="w-full h-full object-cover group-hover:scale-105 transition duration-700" />
             </div>
           ))}
         </div>
@@ -261,7 +262,7 @@ export default function Index() {
         <div className="grid md:grid-cols-3 gap-6">
           {['Презентация клиники', 'Отзывы пациентов', 'Процесс лечения'].map((t, i) => (
             <div key={t} className="relative rounded-3xl overflow-hidden aspect-video group cursor-pointer hover-lift">
-              <img src={[IMAGES.lobby, IMAGES.doctor, IMAGES.room][i]} alt={t} className="w-full h-full object-cover" />
+              <MediaImage src={[IMAGES.lobby, IMAGES.doctor, IMAGES.room][i]} alt={t} className="w-full h-full object-cover" />
               <div className="absolute inset-0 bg-jade/50 flex flex-col items-center justify-center text-ivory">
                 <div className="w-16 h-16 rounded-full bg-gold/90 flex items-center justify-center group-hover:scale-110 transition">
                   <Icon name="Play" size={26} className="text-jade ml-1" />

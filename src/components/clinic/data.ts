@@ -1,12 +1,28 @@
-export const IMAGES = {
+// Все фото и видео берутся из папки проекта: public/media/
+// Положи свои файлы в эту папку с такими же именами — они появятся на сайте.
+// FALLBACK_* используются автоматически, пока ты не загрузил свои файлы.
+const FALLBACK = {
   lobby: 'https://cdn.poehali.dev/projects/3ff9815d-6a53-4b2e-baa5-723a5e088a80/files/d422d50a-17ba-49cb-98c9-18c6e0d06574.jpg',
   room: 'https://cdn.poehali.dev/projects/3ff9815d-6a53-4b2e-baa5-723a5e088a80/files/2793e945-e4be-487d-987e-dc88dd52e738.jpg',
   doctor: 'https://cdn.poehali.dev/projects/3ff9815d-6a53-4b2e-baa5-723a5e088a80/files/ad9b4019-0a11-4fa2-8883-c9d73afefba5.jpg',
 };
 
-// Вставь сюда ссылку на видео для главной страницы (формат .mp4).
-// Если оставить пустым — на главной будет показано фото клиники.
-export const HERO_VIDEO = '';
+export const IMAGES = {
+  lobby: '/media/lobby.jpg',
+  room: '/media/room.jpg',
+  doctor: '/media/doctor.jpg',
+};
+
+// Запасные адреса на случай, если файла ещё нет в папке public/media
+export const IMAGE_FALLBACK: Record<string, string> = {
+  '/media/lobby.jpg': FALLBACK.lobby,
+  '/media/room.jpg': FALLBACK.room,
+  '/media/doctor.jpg': FALLBACK.doctor,
+};
+
+// Видео для главной страницы: положи файл в public/media/hero.mp4
+// Если файла нет — на главной автоматически покажется фото клиники.
+export const HERO_VIDEO = '/media/hero.mp4';
 
 export const ADVANTAGES = [
   { icon: 'Landmark', title: 'Государственная клиника', text: 'Официальный статус и гарантии качества от государства Китая' },
