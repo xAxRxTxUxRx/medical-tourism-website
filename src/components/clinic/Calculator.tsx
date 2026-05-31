@@ -8,10 +8,16 @@ export default function Calculator() {
   const set = (name: string, delta: number) =>
     setQty((q) => ({ ...q, [name]: Math.max(0, (q[name] || 0) + delta) }));
 
-  const total = useMemo(
-    () => PRICES.reduce((sum, o) => sum + o.price * (qty[o.name] || 0), 0),
-    [qty],
-  );
+  const totals = useMemo(() => {
+    let china = 0;
+    let russia = 0;
+    PRICES.forEach((o) => {
+      const n = qty[o.name] || 0;
+      china += o.price * n;
+      russia += o.ru * n;
+    });
+    return { china, russia, save: russia - china };
+  }, [qty]);
   const count = useMemo(
     () => Object.values(qty).reduce((a, b) => a + b, 0),
     [qty],
@@ -51,10 +57,18 @@ export default function Calculator() {
                 <span className="opacity-80">Выбрано услуг</span>
                 <span className="text-lg font-semibold">{count}</span>
               </div>
+              <div className="flex justify-between border-b border-ivory/15 pb-3">
+                <span className="opacity-80">Цена в Китае</span>
+                <span className="text-xl font-semibold">{fmt(totals.china)}</span>
+              </div>
+              <div className="flex justify-between border-b border-ivory/15 pb-3">
+                <span className="opacity-80">Цена в России</span>
+                <span className="line-through opacity-70">{fmt(totals.russia)}</span>
+              </div>
             </div>
             <div className="mt-6 rounded-2xl bg-gold/20 border border-gold/40 p-5 text-center">
-              <p className="text-xs uppercase tracking-widest opacity-80 mb-1">Примерная стоимость</p>
-              <p className="font-display text-4xl text-gold">{fmt(total)}</p>
+              <p className="text-xs uppercase tracking-widest opacity-80 mb-1">Ваша экономия</p>
+              <p className="font-display text-4xl text-gold">{fmt(totals.save)}</p>
             </div>
             <p className="text-xs opacity-70 mt-4 text-center">Итоговая стоимость определяется после осмотра и КТ. Оплата в рублях.</p>
             <a href="#zayavka" className="mt-6 block text-center bg-ivory text-jade rounded-full py-3 font-semibold hover:bg-cream transition">
