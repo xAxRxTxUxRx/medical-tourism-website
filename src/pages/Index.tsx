@@ -6,15 +6,18 @@ import { Textarea } from '@/components/ui/textarea';
 import { toast } from 'sonner';
 import Calculator from '@/components/clinic/Calculator';
 import MediaImage from '@/components/clinic/MediaImage';
+import Reveal from '@/components/clinic/Reveal';
 import {
-  IMAGES, HERO_VIDEO, IMAGE_FALLBACK, ADVANTAGES, SERVICE_GROUPS, PRICES, IMPLANT_STEPS,
-  JOURNEY, DOCTORS, REVIEWS, MESSENGERS,
+  IMAGES, HERO_VIDEO, ABOUT_VIDEO, REVIEW_VIDEOS, IMAGE_FALLBACK,
+  ADVANTAGES, DENTAL_CATEGORIES, CROWN_TYPES, IMPLANT_STEPS,
+  COSMETOLOGY, OTHER_MEDICINE, JOURNEY_STEPS, JOURNEY_BONUSES,
+  DOCTORS, REVIEWS, MESSENGERS,
 } from '@/components/clinic/data';
 
 const NAV = [
   { id: 'about', label: 'О клинике' },
-  { id: 'services', label: 'Услуги' },
-  { id: 'prices', label: 'Цены' },
+  { id: 'services', label: 'Услуги и цены' },
+  { id: 'journey', label: 'Как мы работаем' },
   { id: 'doctors', label: 'Врачи' },
   { id: 'gallery', label: 'Галерея' },
   { id: 'reviews', label: 'Отзывы' },
@@ -34,28 +37,45 @@ const Section = ({ id, eyebrow, title, sub, children, className = '' }: SectionP
   <section id={id} className={`py-20 md:py-28 px-5 ${className}`}>
     <div className="max-w-6xl mx-auto">
       {(eyebrow || title) && (
-        <div className="text-center mb-14">
+        <Reveal className="text-center mb-14">
           {eyebrow && <p className="text-gold uppercase tracking-[0.3em] text-xs font-semibold mb-4">{eyebrow}</p>}
           {title && <h2 className="font-display text-4xl md:text-6xl text-jade text-balance">{title}</h2>}
           {sub && <p className="text-muted-foreground max-w-2xl mx-auto mt-5 text-balance">{sub}</p>}
-        </div>
+        </Reveal>
       )}
       {children}
     </div>
   </section>
 );
 
+const fmt = (n: number) => n.toLocaleString('ru-RU') + ' ₽';
+
+function AutoVideo({ src, poster, className }: { src: string; poster: string; className?: string }) {
+  const [failed, setFailed] = useState(false);
+  if (failed || !src) {
+    return <MediaImage src={poster} alt="" className={className} />;
+  }
+  return (
+    <video
+      src={src}
+      autoPlay
+      muted
+      loop
+      playsInline
+      poster={IMAGE_FALLBACK[poster] || poster}
+      onError={() => setFailed(true)}
+      className={className}
+    />
+  );
+}
+
 export default function Index() {
   const [menu, setMenu] = useState(false);
-  const [videoFailed, setVideoFailed] = useState(false);
-  const showVideo = HERO_VIDEO && !videoFailed;
 
   const submit = (e: React.FormEvent) => {
     e.preventDefault();
     toast.success('Заявка отправлена! Мы свяжемся с вами в ближайшее время.');
   };
-
-  const fmt = (n: number) => n.toLocaleString('ru-RU') + ' ₽';
 
   return (
     <div className="bg-background text-foreground overflow-x-hidden">
@@ -66,7 +86,7 @@ export default function Index() {
             <span className="font-display text-2xl text-jade tracking-wide">Доверие</span>
             <span className="text-gold text-lg">❖</span>
           </a>
-          <nav className="hidden lg:flex items-center gap-7 text-sm">
+          <nav className="hidden lg:flex items-center gap-6 text-sm">
             {NAV.map((n) => (
               <a key={n.id} href={`#${n.id}`} className="text-jade/80 hover:text-jade transition">{n.label}</a>
             ))}
@@ -88,21 +108,9 @@ export default function Index() {
       {/* HERO */}
       <section id="top" className="relative min-h-screen flex items-center justify-center pt-16">
         <div className="absolute inset-0">
-          {showVideo ? (
-            <video
-              src={HERO_VIDEO}
-              autoPlay
-              muted
-              loop
-              playsInline
-              poster={IMAGE_FALLBACK[IMAGES.lobby] || IMAGES.lobby}
-              onError={() => setVideoFailed(true)}
-              className="w-full h-full object-cover"
-            />
-          ) : (
-            <MediaImage src={IMAGES.lobby} alt="Клиника Доверие" className="w-full h-full object-cover" />
-          )}
+          <AutoVideo src={HERO_VIDEO} poster={IMAGES.lobby} className="w-full h-full object-cover" />
           <div className="absolute inset-0 bg-gradient-to-b from-jade/85 via-jade/65 to-jade/90" />
+          <div className="absolute inset-0 pattern-clouds-light opacity-50" />
         </div>
         <div className="relative z-10 text-center text-ivory px-5 max-w-4xl animate-fade-up">
           <div className="inline-flex items-center gap-2 glass-card !bg-ivory/10 !border-ivory/25 rounded-full px-5 py-2 mb-8 text-ivory text-sm">
@@ -117,7 +125,7 @@ export default function Index() {
           </p>
           <div className="flex flex-wrap gap-4 justify-center mb-12">
             <a href="#zayavka" className="bg-gold text-jade px-8 py-4 rounded-full font-semibold hover:scale-105 transition shadow-xl">Получить консультацию</a>
-            <a href="#calc" className="glass-card !bg-ivory/10 !border-ivory/30 text-ivory px-8 py-4 rounded-full font-semibold hover:bg-ivory/20 transition">Рассчитать стоимость</a>
+            <a href="#services" className="glass-card !bg-ivory/10 !border-ivory/30 text-ivory px-8 py-4 rounded-full font-semibold hover:bg-ivory/20 transition">Услуги и цены</a>
           </div>
           <div className="flex flex-wrap justify-center gap-x-7 gap-y-3 text-sm text-ivory/80">
             {['Бесплатная консультация', 'Переводчик', 'Помощь с проживанием', 'Гарантия', 'Оплата в рублях'].map((t) => (
@@ -127,103 +135,219 @@ export default function Index() {
         </div>
       </section>
 
+      {/* VIDEO PRESENTATION */}
+      <section id="video" className="py-20 md:py-28 px-5 gradient-soft pattern-clouds">
+        <div className="max-w-6xl mx-auto">
+          <Reveal className="text-center mb-12">
+            <p className="text-gold uppercase tracking-[0.3em] text-xs font-semibold mb-4">Видеопрезентация</p>
+            <h2 className="font-display text-4xl md:text-6xl text-jade text-balance">Знакомство с клиникой</h2>
+            <p className="text-muted-foreground max-w-2xl mx-auto mt-5">Посмотрите, как устроена наша клиника изнутри.</p>
+          </Reveal>
+          <Reveal>
+            <div className="relative rounded-[2rem] overflow-hidden shadow-2xl border border-gold/20 aspect-video">
+              <AutoVideo src={ABOUT_VIDEO} poster={IMAGES.lobby} className="w-full h-full object-cover" />
+              <div className="absolute inset-0 ring-1 ring-inset ring-ivory/10 pointer-events-none rounded-[2rem]" />
+            </div>
+          </Reveal>
+        </div>
+      </section>
+
       {/* ADVANTAGES */}
       <Section id="about" eyebrow="Почему выбирают нас" title="Доверие, проверенное технологиями" sub="Современный медицинский центр в 700 метрах от российской границы — комфорт, прозрачность и европейское качество.">
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
-          {ADVANTAGES.map((a) => (
-            <div key={a.title} className="glass-card rounded-3xl p-7 hover-lift">
+          {ADVANTAGES.map((a, i) => (
+            <Reveal key={a.title} delay={(i % 4) * 80} className="glass-card rounded-3xl p-7 hover-lift">
               <div className="w-12 h-12 rounded-2xl gradient-jade flex items-center justify-center mb-5">
                 <Icon name={a.icon} size={22} className="text-ivory" />
               </div>
               <h3 className="font-display text-2xl text-jade mb-2">{a.title}</h3>
               <p className="text-sm text-muted-foreground">{a.text}</p>
-            </div>
+            </Reveal>
           ))}
         </div>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-12">
-          {[['3000+', 'м² медцентра'], ['25+', 'стоматологов'], ['98–99%', 'приживаемость'], ['2026', 'год открытия']].map(([n, l]) => (
-            <div key={l} className="text-center gradient-jade rounded-3xl py-8 text-ivory">
-              <p className="font-display text-4xl text-gold">{n}</p>
-              <p className="text-sm opacity-80 mt-1">{l}</p>
-            </div>
+          {[['3000+', 'м² медцентра'], ['25+', 'стоматологов'], ['98–99%', 'приживаемость'], ['2026', 'год открытия']].map(([n, l], i) => (
+            <Reveal key={l} delay={i * 80} className="text-center gradient-jade rounded-3xl py-8 text-ivory relative overflow-hidden">
+              <div className="absolute inset-0 pattern-clouds-light opacity-50" />
+              <p className="font-display text-4xl text-gold relative">{n}</p>
+              <p className="text-sm opacity-80 mt-1 relative">{l}</p>
+            </Reveal>
           ))}
         </div>
       </Section>
 
       <div className="oriental-divider max-w-3xl mx-auto" />
 
-      {/* SERVICES */}
-      <Section id="services" eyebrow="Направления" title="Полный спектр услуг" sub="От премиальной стоматологии до косметологии и традиционной китайской медицины." className="gradient-soft">
-        <div className="grid md:grid-cols-2 gap-6">
-          {SERVICE_GROUPS.map((g) => (
-            <div key={g.title} className="glass-card rounded-3xl p-8 hover-lift">
-              <div className="flex items-center gap-4 mb-6">
-                <div className="w-14 h-14 rounded-2xl gradient-jade flex items-center justify-center">
-                  <Icon name={g.icon} size={26} className="text-ivory" />
+      {/* SERVICES + PRICES */}
+      <Section id="services" eyebrow="Услуги и стоимость" title="Стоматология — наша специализация" sub="Полный спектр стоматологии с прозрачными ценами в рублях. Ниже — косметология и медицина." className="gradient-soft pattern-clouds">
+        <div className="space-y-8">
+          {DENTAL_CATEGORIES.map((cat, idx) => (
+            <Reveal key={cat.id} className="glass-card rounded-[2rem] overflow-hidden hover-lift">
+              <div className={`grid md:grid-cols-2 ${idx % 2 ? 'md:[direction:rtl]' : ''}`}>
+                <div className="aspect-[4/3] md:aspect-auto overflow-hidden [direction:ltr]">
+                  <MediaImage src={cat.image} alt={cat.title} className="w-full h-full object-cover" />
                 </div>
-                <h3 className="font-display text-3xl text-jade">{g.title}</h3>
+                <div className="p-8 [direction:ltr]">
+                  <div className="flex items-center gap-3 mb-3">
+                    <div className="w-12 h-12 rounded-2xl gradient-jade flex items-center justify-center shrink-0">
+                      <Icon name={cat.icon} size={22} className="text-ivory" />
+                    </div>
+                    <h3 className="font-display text-3xl text-jade">{cat.title}</h3>
+                  </div>
+                  {cat.intro && <p className="text-sm text-muted-foreground mb-5">{cat.intro}</p>}
+                  <div className="space-y-3">
+                    {cat.services.map((s) => (
+                      <div key={s.name} className="flex items-start justify-between gap-4 border-b border-gold/15 pb-3">
+                        <div>
+                          <p className="font-medium text-jade">{s.name}</p>
+                          <p className="text-sm text-muted-foreground">{s.desc}</p>
+                        </div>
+                        <span className="text-jade font-semibold whitespace-nowrap font-display text-xl">от {fmt(s.price)}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
               </div>
-              <div className="flex flex-wrap gap-2">
-                {g.items.map((i) => (
-                  <span key={i} className="bg-secondary text-jade text-sm px-4 py-2 rounded-full">{i}</span>
-                ))}
-              </div>
-            </div>
+            </Reveal>
           ))}
         </div>
-      </Section>
 
-      {/* PRICES */}
-      <Section id="prices" eyebrow="Прозрачные цены" title="Стоимость и экономия" sub="Цены указаны в рублях. Сравните со средними ценами в России.">
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
-          {PRICES.map((p) => (
-            <div key={p.name} className="glass-card rounded-3xl p-7 hover-lift flex flex-col">
-              <p className="font-display text-2xl text-jade mb-4">{p.name}</p>
-              <div className="mt-auto">
-                <p className="text-sm text-muted-foreground line-through">в России {fmt(p.russia)}</p>
-                <p className="font-display text-4xl text-jade">от {fmt(p.china)}</p>
-                <span className="inline-flex items-center gap-1 mt-3 text-sm font-semibold text-gold bg-gold/10 px-3 py-1 rounded-full">
-                  <Icon name="TrendingDown" size={14} /> экономия {fmt(p.russia - p.china)}
-                </span>
+        {/* Виды коронок */}
+        <Reveal className="text-center mt-20 mb-10">
+          <h3 className="font-display text-3xl md:text-4xl text-jade">Виды коронок</h3>
+          <p className="text-muted-foreground mt-3">Подбираем оптимальный материал под ваш случай.</p>
+        </Reveal>
+        <div className="grid md:grid-cols-2 gap-6">
+          {CROWN_TYPES.map((c, i) => (
+            <Reveal key={c.title} delay={i * 100} className="glass-card rounded-3xl overflow-hidden hover-lift">
+              <div className="aspect-[16/9] overflow-hidden">
+                <MediaImage src={c.image} alt={c.title} className="w-full h-full object-cover" />
               </div>
-            </div>
+              <div className="p-7">
+                <div className="flex items-center gap-3 mb-3">
+                  <Icon name={c.icon} size={24} className="text-gold" />
+                  <h4 className="font-display text-2xl text-jade">{c.title}</h4>
+                </div>
+                <p className="text-sm text-muted-foreground mb-4">{c.text}</p>
+                <ul className="space-y-2 mb-5">
+                  {c.points.map((p) => (
+                    <li key={p} className="flex items-start gap-2 text-sm text-jade/90">
+                      <Icon name="Check" size={15} className="text-gold mt-0.5 shrink-0" />{p}
+                    </li>
+                  ))}
+                </ul>
+                <span className="inline-block bg-gold/15 text-jade font-semibold px-4 py-2 rounded-full">от {fmt(c.price)}</span>
+              </div>
+            </Reveal>
           ))}
         </div>
-      </Section>
 
-      {/* CALCULATOR */}
-      <Section id="calc" eyebrow="Калькулятор" title="Рассчитайте стоимость лечения" sub="Выберите услуги и узнайте, сколько вы сэкономите по сравнению с Россией." className="gradient-soft">
-        <Calculator />
-      </Section>
-
-      {/* IMPLANT TIMELINE */}
-      <Section id="implant" eyebrow="Имплантация" title="Как проходит имплантация" sub="Приживаемость имплантов 98–99%. Прозрачный процесс на каждом этапе.">
+        {/* Этапы имплантации */}
+        <Reveal className="text-center mt-20 mb-10">
+          <h3 className="font-display text-3xl md:text-4xl text-jade">Как проходит имплантация</h3>
+          <p className="text-muted-foreground mt-3 max-w-2xl mx-auto">Приживаемость имплантов 98–99%. Прозрачный процесс на каждом этапе.</p>
+        </Reveal>
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {IMPLANT_STEPS.map((s, i) => (
-            <div key={s.title} className="relative glass-card rounded-3xl p-7 hover-lift">
+            <Reveal key={s.title} delay={(i % 3) * 80} className="relative glass-card rounded-3xl p-7 hover-lift">
               <span className="absolute top-5 right-6 font-display text-5xl text-gold/30">{i + 1}</span>
               <div className="w-12 h-12 rounded-2xl gradient-jade flex items-center justify-center mb-5">
                 <Icon name={s.icon} size={22} className="text-ivory" />
               </div>
-              <h3 className="font-display text-2xl text-jade mb-2">{s.title}</h3>
+              <h4 className="font-display text-2xl text-jade mb-2">{s.title}</h4>
               <p className="text-sm text-muted-foreground">{s.text}</p>
-            </div>
+            </Reveal>
           ))}
+        </div>
+
+        {/* Калькулятор */}
+        <Reveal className="text-center mt-20 mb-10">
+          <h3 className="font-display text-3xl md:text-4xl text-jade">Калькулятор стоимости</h3>
+          <p className="text-muted-foreground mt-3">Выберите услуги и узнайте примерную стоимость лечения.</p>
+        </Reveal>
+        <Calculator />
+
+        {/* Косметология и другие медицины */}
+        <Reveal className="text-center mt-20 mb-10">
+          <h3 className="font-display text-3xl md:text-4xl text-jade">Косметология и медицина</h3>
+          <p className="text-muted-foreground mt-3">Помимо стоматологии мы предлагаем широкий спектр услуг.</p>
+        </Reveal>
+        <div className="grid lg:grid-cols-3 gap-6">
+          <Reveal className="lg:col-span-1 glass-card rounded-3xl overflow-hidden hover-lift">
+            <div className="aspect-[16/10] overflow-hidden">
+              <MediaImage src={IMAGES.room} alt="Косметология" className="w-full h-full object-cover" />
+            </div>
+            <div className="p-7">
+              <div className="flex items-center gap-3 mb-4">
+                <Icon name="Flower2" size={24} className="text-gold" />
+                <h4 className="font-display text-2xl text-jade">Косметология</h4>
+              </div>
+              <div className="flex flex-wrap gap-2">
+                {COSMETOLOGY.map((c) => (
+                  <span key={c} className="bg-secondary text-jade text-xs px-3 py-1.5 rounded-full">{c}</span>
+                ))}
+              </div>
+            </div>
+          </Reveal>
+          <div className="lg:col-span-2 grid sm:grid-cols-3 gap-6">
+            {OTHER_MEDICINE.map((m, i) => (
+              <Reveal key={m.title} delay={i * 80} className="glass-card rounded-3xl p-7 hover-lift flex flex-col">
+                <div className="w-12 h-12 rounded-2xl gradient-jade flex items-center justify-center mb-5">
+                  <Icon name={m.icon} size={22} className="text-ivory" />
+                </div>
+                <h4 className="font-display text-2xl text-jade mb-2">{m.title}</h4>
+                <p className="text-sm text-muted-foreground">{m.text}</p>
+              </Reveal>
+            ))}
+          </div>
         </div>
       </Section>
 
       {/* JOURNEY */}
-      <Section id="journey" eyebrow="Медицинский туризм" title="Ваш путь к новой улыбке" sub="Бесплатное бронирование отеля, трансфер, помощь на границе и переводчик." className="gradient-jade !text-ivory">
+      <Section id="journey" eyebrow="Как мы работаем" title="Ваш путь к новой улыбке" sub="Сопровождаем на каждом этапе — от первой заявки до возвращения домой." className="gradient-jade !text-ivory pattern-clouds-light">
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {JOURNEY.map((s, i) => (
-            <div key={s.title} className="glass-card !bg-ivory/10 !border-ivory/20 rounded-3xl p-7 text-ivory">
+          {JOURNEY_STEPS.map((s, i) => (
+            <Reveal key={s.title} delay={(i % 3) * 80} className="glass-card !bg-ivory/10 !border-ivory/20 rounded-3xl p-7 text-ivory">
               <div className="flex items-center gap-3 mb-4">
                 <span className="font-display text-3xl text-gold">0{i + 1}</span>
                 <Icon name={s.icon} size={24} className="text-gold" />
               </div>
               <h3 className="font-display text-2xl mb-2">{s.title}</h3>
               <p className="text-sm opacity-80">{s.text}</p>
-            </div>
+            </Reveal>
+          ))}
+        </div>
+
+        {/* Бонусы */}
+        <Reveal className="text-center mt-16 mb-8">
+          <h3 className="font-display text-3xl md:text-4xl text-ivory">Всё это — бесплатно для наших пациентов</h3>
+        </Reveal>
+        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
+          {JOURNEY_BONUSES.map((b, i) => (
+            <Reveal key={b.title} delay={i * 80} className="rounded-3xl bg-ivory/95 text-jade p-7 hover-lift">
+              <div className="w-12 h-12 rounded-2xl bg-gold/15 flex items-center justify-center mb-4">
+                <Icon name={b.icon} size={22} className="text-gold" />
+              </div>
+              <h4 className="font-display text-xl mb-2">{b.title}</h4>
+              <p className="text-sm text-muted-foreground">{b.text}</p>
+            </Reveal>
+          ))}
+        </div>
+
+        {/* Фото клиентов и отеля */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-12">
+          {[
+            { src: IMAGES.doctor, cap: 'Наши пациенты' },
+            { src: IMAGES.lobby, cap: 'Сопровождение' },
+            { src: IMAGES.room, cap: 'Отель с завтраком' },
+            { src: IMAGES.lobby, cap: 'Комфортное проживание' },
+          ].map((p, i) => (
+            <Reveal key={i} delay={i * 70} className="rounded-3xl overflow-hidden relative group aspect-[4/5]">
+              <MediaImage src={p.src} alt={p.cap} className="w-full h-full object-cover group-hover:scale-105 transition duration-700" />
+              <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-jade/90 to-transparent p-4">
+                <p className="text-ivory text-sm font-medium">{p.cap}</p>
+              </div>
+            </Reveal>
           ))}
         </div>
       </Section>
@@ -231,8 +355,8 @@ export default function Index() {
       {/* DOCTORS */}
       <Section id="doctors" eyebrow="Наша команда" title="Врачи клиники «Доверие»" sub="Опытные специалисты с практикой работы с пациентами из России.">
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {DOCTORS.map((d) => (
-            <div key={d.name} className="group rounded-3xl overflow-hidden glass-card hover-lift">
+          {DOCTORS.map((d, i) => (
+            <Reveal key={d.name} delay={(i % 3) * 80} className="group rounded-3xl overflow-hidden glass-card hover-lift">
               <div className="aspect-[4/5] overflow-hidden">
                 <MediaImage src={IMAGES.doctor} alt={d.name} className="w-full h-full object-cover group-hover:scale-105 transition duration-700" />
               </div>
@@ -241,93 +365,102 @@ export default function Index() {
                 <p className="text-sm text-gold font-medium">{d.role}</p>
                 <p className="text-sm text-muted-foreground mt-1">{d.exp}</p>
               </div>
-            </div>
+            </Reveal>
           ))}
         </div>
+
+        {/* Общее фото команды */}
+        <Reveal className="mt-10 rounded-[2rem] overflow-hidden relative hover-lift">
+          <div className="aspect-[21/9] overflow-hidden">
+            <MediaImage src={IMAGES.lobby} alt="Команда врачей клиники" className="w-full h-full object-cover" />
+          </div>
+          <div className="absolute inset-0 bg-gradient-to-t from-jade/85 to-transparent flex items-end p-8">
+            <div className="text-ivory">
+              <p className="font-display text-3xl md:text-4xl">Наша команда</p>
+              <p className="opacity-85">Более 25 специалистов, готовых помочь вам</p>
+            </div>
+          </div>
+        </Reveal>
       </Section>
 
       {/* GALLERY */}
-      <Section id="gallery" eyebrow="Галерея" title="Атмосфера клиники" sub="Интерьеры, кабинеты, оборудование и зоны отдыха для пациентов." className="gradient-soft">
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-4 auto-rows-[220px]">
-          {[IMAGES.lobby, IMAGES.room, IMAGES.doctor, IMAGES.room, IMAGES.lobby, IMAGES.doctor].map((src, i) => (
-            <div key={i} className={`rounded-3xl overflow-hidden group ${i === 0 ? 'md:row-span-2 md:col-span-2' : ''}`}>
+      <Section id="gallery" eyebrow="Галерея" title="Атмосфера клиники" sub="Интерьеры, кабинеты, оборудование и зоны отдыха для пациентов." className="gradient-soft pattern-clouds">
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-4 auto-rows-[260px]">
+          {[IMAGES.lobby, IMAGES.room, IMAGES.doctor, IMAGES.room, IMAGES.lobby, IMAGES.doctor, IMAGES.lobby, IMAGES.room].map((src, i) => (
+            <Reveal key={i} delay={(i % 3) * 60} className={`rounded-3xl overflow-hidden group ${i === 0 ? 'md:row-span-2 md:col-span-2' : ''} ${i === 5 ? 'md:row-span-2' : ''}`}>
               <MediaImage src={src} alt="Галерея клиники" className="w-full h-full object-cover group-hover:scale-105 transition duration-700" />
-            </div>
+            </Reveal>
           ))}
         </div>
-      </Section>
 
-      {/* VIDEO */}
-      <Section id="video" eyebrow="Видео" title="Кинематографичный обзор клиники" sub="Презентация клиники, отзывы пациентов и процесс лечения.">
-        <div className="grid md:grid-cols-3 gap-6">
-          {['Презентация клиники', 'Отзывы пациентов', 'Процесс лечения'].map((t, i) => (
-            <div key={t} className="relative rounded-3xl overflow-hidden aspect-video group cursor-pointer hover-lift">
-              <MediaImage src={[IMAGES.lobby, IMAGES.doctor, IMAGES.room][i]} alt={t} className="w-full h-full object-cover" />
-              <div className="absolute inset-0 bg-jade/50 flex flex-col items-center justify-center text-ivory">
-                <div className="w-16 h-16 rounded-full bg-gold/90 flex items-center justify-center group-hover:scale-110 transition">
-                  <Icon name="Play" size={26} className="text-jade ml-1" />
-                </div>
-                <p className="font-display text-xl mt-4">{t}</p>
+        {/* Сертификаты */}
+        <Reveal className="text-center mt-20 mb-10">
+          <h3 className="font-display text-3xl md:text-4xl text-jade">Сертификаты и лицензии</h3>
+          <p className="text-muted-foreground mt-3">Подтверждение качества и официального статуса клиники.</p>
+        </Reveal>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-5">
+          {[0, 1, 2, 3].map((i) => (
+            <Reveal key={i} delay={i * 70} className="glass-card rounded-2xl p-3 hover-lift">
+              <div className="aspect-[3/4] overflow-hidden rounded-xl bg-cream">
+                <MediaImage src={[IMAGES.room, IMAGES.lobby, IMAGES.doctor, IMAGES.room][i]} alt={`Сертификат ${i + 1}`} className="w-full h-full object-cover" />
               </div>
-            </div>
+              <p className="text-center text-sm text-muted-foreground mt-3">Сертификат №{i + 1}</p>
+            </Reveal>
           ))}
         </div>
       </Section>
 
       {/* REVIEWS */}
-      <Section id="reviews" eyebrow="Отзывы" title="Что говорят пациенты" className="gradient-soft">
+      <Section id="reviews" eyebrow="Отзывы" title="Что говорят пациенты">
         <div className="grid md:grid-cols-3 gap-6">
-          {REVIEWS.map((r) => (
-            <div key={r.name} className="glass-card rounded-3xl p-7 hover-lift">
+          {REVIEWS.map((r, i) => (
+            <Reveal key={r.name} delay={i * 80} className="glass-card rounded-3xl p-7 hover-lift">
               <div className="flex gap-1 mb-4">
-                {Array.from({ length: r.rating }).map((_, i) => (
-                  <Icon key={i} name="Star" size={16} className="text-gold fill-gold" />
+                {Array.from({ length: r.rating }).map((_, j) => (
+                  <Icon key={j} name="Star" size={16} className="text-gold fill-gold" />
                 ))}
               </div>
               <p className="text-jade/90 mb-5 leading-relaxed">«{r.text}»</p>
               <p className="font-display text-xl text-jade">{r.name}</p>
-            </div>
+            </Reveal>
           ))}
         </div>
-      </Section>
 
-      {/* TRAVEL */}
-      <Section id="travel" eyebrow="Дорога в Хэйхэ" title="Как добраться до клиники" sub="Хэйхэ расположен прямо напротив Благовещенска, всего в 700 метрах от пункта пропуска.">
-        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
-          {[
-            { icon: 'MapPin', t: 'Рядом с Благовещенском', d: 'Город Хэйхэ напротив через Амур' },
-            { icon: 'TramFront', t: 'Переход границы', d: 'Помогаем пройти пункт пропуска' },
-            { icon: 'Car', t: 'Трансфер', d: 'Встречаем и довозим до клиники' },
-            { icon: 'BedDouble', t: 'Проживание', d: 'Бронируем отель бесплатно' },
-          ].map((c) => (
-            <div key={c.t} className="glass-card rounded-3xl p-7 text-center hover-lift">
-              <Icon name={c.icon} size={28} className="text-gold mx-auto mb-4" />
-              <h3 className="font-display text-2xl text-jade mb-1">{c.t}</h3>
-              <p className="text-sm text-muted-foreground">{c.d}</p>
-            </div>
+        {/* Видео-отзывы */}
+        <Reveal className="text-center mt-16 mb-8">
+          <h3 className="font-display text-3xl md:text-4xl text-jade">Видео-отзывы</h3>
+          <p className="text-muted-foreground mt-3">Истории пациентов о лечении в нашей клинике.</p>
+        </Reveal>
+        <div className="grid md:grid-cols-2 gap-6">
+          {REVIEW_VIDEOS.map((v, i) => (
+            <Reveal key={i} delay={i * 100} className="rounded-[2rem] overflow-hidden shadow-xl border border-gold/20 aspect-video hover-lift">
+              <AutoVideo src={v} poster={[IMAGES.doctor, IMAGES.room][i]} className="w-full h-full object-cover" />
+            </Reveal>
           ))}
         </div>
       </Section>
 
       {/* APPOINTMENT + CONTACTS */}
-      <Section id="zayavka" eyebrow="Запись на приём" title="Получите бесплатную консультацию" className="gradient-jade !text-ivory">
+      <Section id="zayavka" eyebrow="Запись на приём" title="Получите бесплатную консультацию" className="gradient-jade !text-ivory pattern-clouds-light">
         <div className="grid lg:grid-cols-2 gap-10">
-          <form onSubmit={submit} className="glass-card !bg-ivory/95 rounded-3xl p-8 space-y-4">
-            <div className="grid sm:grid-cols-2 gap-4">
-              <Input required placeholder="Имя" className="bg-white rounded-xl h-12" />
-              <Input required placeholder="Телефон" className="bg-white rounded-xl h-12" />
-            </div>
-            <div className="grid sm:grid-cols-2 gap-4">
-              <Input placeholder="Город" className="bg-white rounded-xl h-12" />
-              <Input placeholder="Желаемое лечение" className="bg-white rounded-xl h-12" />
-            </div>
-            <Input placeholder="Мессенджер для связи" className="bg-white rounded-xl h-12" />
-            <Textarea placeholder="Комментарий" className="bg-white rounded-xl min-h-24" />
-            <Button type="submit" className="w-full bg-jade text-ivory rounded-full h-12 text-base hover:opacity-90">Отправить заявку</Button>
-            <p className="text-xs text-jade/60 text-center">Нажимая кнопку, вы соглашаетесь с обработкой персональных данных</p>
-          </form>
+          <Reveal>
+            <form onSubmit={submit} className="glass-card !bg-ivory/95 rounded-3xl p-8 space-y-4">
+              <div className="grid sm:grid-cols-2 gap-4">
+                <Input required placeholder="Имя" className="bg-white rounded-xl h-12" />
+                <Input required placeholder="Телефон" className="bg-white rounded-xl h-12" />
+              </div>
+              <div className="grid sm:grid-cols-2 gap-4">
+                <Input placeholder="Город" className="bg-white rounded-xl h-12" />
+                <Input placeholder="Желаемое лечение" className="bg-white rounded-xl h-12" />
+              </div>
+              <Input placeholder="Мессенджер для связи" className="bg-white rounded-xl h-12" />
+              <Textarea placeholder="Комментарий" className="bg-white rounded-xl min-h-24" />
+              <Button type="submit" className="w-full bg-jade text-ivory rounded-full h-12 text-base hover:opacity-90">Отправить заявку</Button>
+              <p className="text-xs text-jade/60 text-center">Нажимая кнопку, вы соглашаетесь с обработкой персональных данных</p>
+            </form>
+          </Reveal>
 
-          <div id="contacts" className="space-y-4">
+          <Reveal delay={120} id="contacts" as="div" className="space-y-4">
             <div className="space-y-3">
               {MESSENGERS.map((m) => (
                 <a key={m.label} href={m.href} className="glass-card !bg-ivory/10 !border-ivory/20 rounded-2xl p-5 flex items-center gap-4 text-ivory hover:bg-ivory/15 transition">
@@ -348,13 +481,14 @@ export default function Index() {
             <div className="rounded-2xl overflow-hidden h-48 border border-ivory/20">
               <iframe title="Карта" className="w-full h-full grayscale" src="https://yandex.ru/map-widget/v1/?ll=127.528%2C50.246&z=12" />
             </div>
-          </div>
+          </Reveal>
         </div>
       </Section>
 
       {/* FOOTER */}
-      <footer className="bg-jade text-ivory/70 py-12 px-5">
-        <div className="max-w-6xl mx-auto flex flex-col md:flex-row justify-between gap-6 items-center text-center md:text-left">
+      <footer className="bg-jade text-ivory/70 py-12 px-5 relative overflow-hidden">
+        <div className="absolute inset-0 pattern-clouds-light opacity-40" />
+        <div className="max-w-6xl mx-auto flex flex-col md:flex-row justify-between gap-6 items-center text-center md:text-left relative">
           <div>
             <p className="font-display text-2xl text-ivory">Доверие <span className="text-gold">❖</span></p>
             <p className="text-sm mt-1">Государственная клиника · Хэйхэ, Китай</p>

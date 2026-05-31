@@ -4,85 +4,70 @@
 
 @layer base {
   :root {
-    --background: 210 40% 98%;
-    --foreground: 215 45% 16%;
+    --background: 180 30% 98%;
+    --foreground: 185 55% 12%;
 
     --card: 0 0% 100%;
-    --card-foreground: 215 45% 16%;
+    --card-foreground: 185 55% 12%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 215 45% 16%;
+    --popover-foreground: 185 55% 12%;
 
-    --primary: 212 56% 36%;
-    --primary-foreground: 210 40% 98%;
+    --primary: 184 94% 21%;
+    --primary-foreground: 180 30% 98%;
 
-    --secondary: 206 42% 92%;
-    --secondary-foreground: 212 56% 30%;
+    --secondary: 183 36% 90%;
+    --secondary-foreground: 184 80% 18%;
 
-    --muted: 208 36% 94%;
-    --muted-foreground: 213 18% 46%;
+    --muted: 182 28% 93%;
+    --muted-foreground: 185 16% 40%;
 
-    --accent: 188 52% 52%;
-    --accent-foreground: 215 45% 16%;
+    --accent: 42 54% 54%;
+    --accent-foreground: 185 55% 12%;
 
     --destructive: 0 72% 50%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 208 32% 88%;
-    --input: 208 32% 88%;
-    --ring: 212 56% 40%;
+    --border: 183 28% 86%;
+    --input: 183 28% 86%;
+    --ring: 184 94% 25%;
 
     --radius: 1rem;
 
-    --jade: 212 56% 34%;
-    --celadon: 206 48% 76%;
-    --turquoise: 188 52% 56%;
-    --ivory: 210 40% 98%;
-    --cream: 206 44% 94%;
-    --gold: 188 48% 48%;
+    --jade: 184 94% 21%;
+    --celadon: 183 40% 74%;
+    --turquoise: 184 60% 38%;
+    --ivory: 180 30% 98%;
+    --cream: 183 36% 94%;
+    --gold: 42 54% 54%;
 
     --sidebar-background: 0 0% 98%;
-
     --sidebar-foreground: 240 5.3% 26.1%;
-
     --sidebar-primary: 240 5.9% 10%;
-
     --sidebar-primary-foreground: 0 0% 98%;
-
     --sidebar-accent: 240 4.8% 95.9%;
-
     --sidebar-accent-foreground: 240 5.9% 10%;
-
     --sidebar-border: 220 13% 91%;
-
     --sidebar-ring: 217.2 91.2% 59.8%;
   }
 
   .dark {
     --background: 222.2 84% 4.9%;
     --foreground: 210 40% 98%;
-
     --card: 222.2 84% 4.9%;
     --card-foreground: 210 40% 98%;
-
     --popover: 222.2 84% 4.9%;
     --popover-foreground: 210 40% 98%;
-
     --primary: 210 40% 98%;
     --primary-foreground: 222.2 47.4% 11.2%;
-
     --secondary: 217.2 32.6% 17.5%;
     --secondary-foreground: 210 40% 98%;
-
     --muted: 217.2 32.6% 17.5%;
     --muted-foreground: 215 20.2% 65.1%;
-
     --accent: 217.2 32.6% 17.5%;
     --accent-foreground: 210 40% 98%;
-
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 210 40% 98%;
-
     --border: 217.2 32.6% 17.5%;
     --input: 217.2 32.6% 17.5%;
     --ring: 212.7 26.8% 83.9%;
@@ -133,15 +118,15 @@
   .gradient-jade {
     background: linear-gradient(
       135deg,
-      hsl(214 60% 30%) 0%,
-      hsl(196 56% 42%) 100%
+      hsl(184 94% 16%) 0%,
+      hsl(184 70% 26%) 100%
     );
   }
   .gradient-soft {
     background: linear-gradient(
       160deg,
-      hsl(210 40% 98%) 0%,
-      hsl(200 44% 93%) 100%
+      hsl(180 30% 98%) 0%,
+      hsl(183 36% 92%) 100%
     );
   }
   .text-balance {
@@ -171,7 +156,7 @@
   }
 
   .glass-card {
-    background: hsl(0 0% 100% / 0.7);
+    background: hsl(0 0% 100% / 0.72);
     backdrop-filter: blur(12px);
     border: 1px solid hsl(var(--gold) / 0.18);
   }
@@ -183,7 +168,19 @@
   }
   .hover-lift:hover {
     transform: translateY(-8px);
-    box-shadow: 0 24px 60px -20px hsl(214 56% 36% / 0.35);
+    box-shadow: 0 24px 60px -20px hsl(184 80% 21% / 0.35);
+  }
+
+  /* Ненавязчивый китайский узор «волны/облака» */
+  .pattern-clouds {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120' viewBox='0 0 120 120'%3E%3Cg fill='none' stroke='%2303646A' stroke-width='1.1' stroke-opacity='0.06'%3E%3Cpath d='M0 60c15 0 15-18 30-18s15 18 30 18 15-18 30-18 15 18 30 18'/%3E%3Cpath d='M0 90c15 0 15-18 30-18s15 18 30 18 15-18 30-18 15 18 30 18'/%3E%3Cpath d='M0 30c15 0 15-18 30-18s15 18 30 18 15-18 30-18 15 18 30 18'/%3E%3C/g%3E%3C/svg%3E");
+  }
+  .pattern-clouds-light {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120' viewBox='0 0 120 120'%3E%3Cg fill='none' stroke='%23ffffff' stroke-width='1.1' stroke-opacity='0.05'%3E%3Cpath d='M0 60c15 0 15-18 30-18s15 18 30 18 15-18 30-18 15 18 30 18'/%3E%3Cpath d='M0 90c15 0 15-18 30-18s15 18 30 18 15-18 30-18 15 18 30 18'/%3E%3Cpath d='M0 30c15 0 15-18 30-18s15 18 30 18 15-18 30-18 15 18 30 18'/%3E%3C/g%3E%3C/svg%3E");
+  }
+  /* Угловой орнамент-меандр */
+  .pattern-lattice {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60' viewBox='0 0 60 60'%3E%3Cg fill='none' stroke='%23C9A24B' stroke-width='1' stroke-opacity='0.08'%3E%3Crect x='10' y='10' width='40' height='40'/%3E%3Crect x='22' y='22' width='16' height='16'/%3E%3C/g%3E%3C/svg%3E");
   }
 }
 
@@ -212,6 +209,19 @@
 }
 .animate-float-slow {
   animation: float-slow 7s ease-in-out infinite;
+}
+
+/* Scroll reveal */
+.reveal {
+  opacity: 0;
+  transform: translateY(40px);
+  transition:
+    opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 html {
