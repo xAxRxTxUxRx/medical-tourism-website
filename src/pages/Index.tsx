@@ -478,8 +478,8 @@ export default function Index() {
                     <Icon name={m.icon} size={20} className="text-gold" />
                   </div>
                   <div className="min-w-0">
-                    <p className="text-xs text-ivory/70">{m.label}</p>
-                    <p className="font-medium text-ivory truncate">{m.value}</p>
+                    <p className="text-xs text-[#036168]">{m.label}</p>
+                    <p className="font-medium truncate text-[#036168]">{m.value}</p>
                   </div>
                 </a>
               ))}
