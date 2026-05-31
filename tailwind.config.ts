@@ -19,7 +19,17 @@ export default {
 			}
 		},
 		extend: {
+			fontFamily: {
+				display: ['Cormorant', 'serif'],
+				sans: ['Manrope', 'sans-serif'],
+			},
 			colors: {
+				jade: 'hsl(var(--jade))',
+				celadon: 'hsl(var(--celadon))',
+				turquoise: 'hsl(var(--turquoise))',
+				ivory: 'hsl(var(--ivory))',
+				cream: 'hsl(var(--cream))',
+				gold: 'hsl(var(--gold))',
 				border: 'hsl(var(--border))',
 				input: 'hsl(var(--input))',
 				ring: 'hsl(var(--ring))',
