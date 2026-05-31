@@ -8,9 +8,10 @@ import Calculator from '@/components/clinic/Calculator';
 import MediaImage from '@/components/clinic/MediaImage';
 import Reveal from '@/components/clinic/Reveal';
 import {
-  IMAGES, HERO_VIDEO, ABOUT_VIDEO, REVIEW_VIDEOS, IMAGE_FALLBACK,
+  IMAGES, HERO_VIDEO, IMAGE_FALLBACK,
+  GALLERY, CERTIFICATES, ALL_DOCTORS_PHOTO, HOTEL_PHOTOS, FEEDBACK_PHOTOS,
   ADVANTAGES, DENTAL_CATEGORIES, CROWN_TYPES, IMPLANT_STEPS,
-  COSMETOLOGY, OTHER_MEDICINE, JOURNEY_STEPS, JOURNEY_BONUSES,
+  DIRECTIONS, JOURNEY_STEPS, JOURNEY_BONUSES,
   DOCTORS, REVIEWS, MESSENGERS,
 } from '@/components/clinic/data';
 
@@ -135,23 +136,6 @@ export default function Index() {
         </div>
       </section>
 
-      {/* VIDEO PRESENTATION */}
-      <section id="video" className="py-20 md:py-28 px-5 gradient-soft pattern-clouds">
-        <div className="max-w-6xl mx-auto">
-          <Reveal className="text-center mb-12">
-            <p className="text-gold uppercase tracking-[0.3em] text-xs font-semibold mb-4">Видеопрезентация</p>
-            <h2 className="font-display text-4xl md:text-6xl text-jade text-balance">Знакомство с клиникой</h2>
-            <p className="text-muted-foreground max-w-2xl mx-auto mt-5">Посмотрите, как устроена наша клиника изнутри.</p>
-          </Reveal>
-          <Reveal>
-            <div className="relative rounded-[2rem] overflow-hidden shadow-2xl border border-gold/20 aspect-video">
-              <AutoVideo src={ABOUT_VIDEO} poster={IMAGES.lobby} className="w-full h-full object-cover" />
-              <div className="absolute inset-0 ring-1 ring-inset ring-ivory/10 pointer-events-none rounded-[2rem]" />
-            </div>
-          </Reveal>
-        </div>
-      </section>
-
       {/* ADVANTAGES */}
       <Section id="about" eyebrow="Почему выбирают нас" title="Доверие, проверенное технологиями" sub="Современный медицинский центр в 700 метрах от российской границы — комфорт, прозрачность и европейское качество.">
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
@@ -202,7 +186,10 @@ export default function Index() {
                           <p className="font-medium text-jade">{s.name}</p>
                           <p className="text-sm text-muted-foreground">{s.desc}</p>
                         </div>
-                        <span className="text-jade font-semibold whitespace-nowrap font-display text-xl">от {fmt(s.price)}</span>
+                        <div className="text-right whitespace-nowrap">
+                          <p className="text-jade font-semibold font-display text-xl leading-none">от {fmt(s.price)}</p>
+                          <p className="text-xs text-muted-foreground line-through mt-1">в РФ {fmt(s.ru)}</p>
+                        </div>
                       </div>
                     ))}
                   </div>
@@ -272,34 +259,30 @@ export default function Index() {
           <h3 className="font-display text-3xl md:text-4xl text-jade">Косметология и медицина</h3>
           <p className="text-muted-foreground mt-3">Помимо стоматологии мы предлагаем широкий спектр услуг.</p>
         </Reveal>
-        <div className="grid lg:grid-cols-3 gap-6">
-          <Reveal className="lg:col-span-1 glass-card rounded-3xl overflow-hidden hover-lift">
-            <div className="aspect-[16/10] overflow-hidden">
-              <MediaImage src={IMAGES.room} alt="Косметология" className="w-full h-full object-cover" />
-            </div>
-            <div className="p-7">
-              <div className="flex items-center gap-3 mb-4">
-                <Icon name="Flower2" size={24} className="text-gold" />
-                <h4 className="font-display text-2xl text-jade">Косметология</h4>
+        <div className="grid md:grid-cols-3 gap-6">
+          {DIRECTIONS.map((d, i) => (
+            <Reveal key={d.title} delay={i * 90} className="glass-card rounded-3xl overflow-hidden hover-lift flex flex-col">
+              <div className="aspect-[16/10] overflow-hidden">
+                <MediaImage src={d.image} alt={d.title} className="w-full h-full object-cover" />
               </div>
-              <div className="flex flex-wrap gap-2">
-                {COSMETOLOGY.map((c) => (
-                  <span key={c} className="bg-secondary text-jade text-xs px-3 py-1.5 rounded-full">{c}</span>
-                ))}
-              </div>
-            </div>
-          </Reveal>
-          <div className="lg:col-span-2 grid sm:grid-cols-3 gap-6">
-            {OTHER_MEDICINE.map((m, i) => (
-              <Reveal key={m.title} delay={i * 80} className="glass-card rounded-3xl p-7 hover-lift flex flex-col">
-                <div className="w-12 h-12 rounded-2xl gradient-jade flex items-center justify-center mb-5">
-                  <Icon name={m.icon} size={22} className="text-ivory" />
+              <div className="p-7 flex flex-col flex-1">
+                <div className="flex items-center gap-3 mb-3">
+                  <div className="w-11 h-11 rounded-2xl gradient-jade flex items-center justify-center shrink-0">
+                    <Icon name={d.icon} size={20} className="text-ivory" />
+                  </div>
+                  <h4 className="font-display text-2xl text-jade">{d.title}</h4>
                 </div>
-                <h4 className="font-display text-2xl text-jade mb-2">{m.title}</h4>
-                <p className="text-sm text-muted-foreground">{m.text}</p>
-              </Reveal>
-            ))}
-          </div>
+                <p className="text-sm text-muted-foreground mb-4">{d.text}</p>
+                <ul className="space-y-2 mt-auto">
+                  {d.items.map((it) => (
+                    <li key={it} className="flex items-start gap-2 text-sm text-jade/90">
+                      <Icon name="Check" size={15} className="text-gold mt-0.5 shrink-0" />{it}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </Reveal>
+          ))}
         </div>
       </Section>
 
@@ -307,13 +290,15 @@ export default function Index() {
       <Section id="journey" eyebrow="Как мы работаем" title="Ваш путь к новой улыбке" sub="Сопровождаем на каждом этапе — от первой заявки до возвращения домой." className="gradient-jade !text-ivory pattern-clouds-light">
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {JOURNEY_STEPS.map((s, i) => (
-            <Reveal key={s.title} delay={(i % 3) * 80} className="glass-card !bg-ivory/10 !border-ivory/20 rounded-3xl p-7 text-ivory">
+            <Reveal key={s.title} delay={(i % 3) * 80} className="rounded-3xl bg-ivory/[0.08] border border-ivory/25 backdrop-blur-sm p-7 hover-lift">
               <div className="flex items-center gap-3 mb-4">
-                <span className="font-display text-3xl text-gold">0{i + 1}</span>
-                <Icon name={s.icon} size={24} className="text-gold" />
+                <span className="font-display text-4xl text-gold leading-none">0{i + 1}</span>
+                <div className="w-11 h-11 rounded-2xl bg-gold/20 flex items-center justify-center">
+                  <Icon name={s.icon} size={22} className="text-gold" />
+                </div>
               </div>
-              <h3 className="font-display text-2xl mb-2">{s.title}</h3>
-              <p className="text-sm opacity-80">{s.text}</p>
+              <h3 className="font-display text-2xl mb-2 text-ivory">{s.title}</h3>
+              <p className="text-sm text-ivory/85">{s.text}</p>
             </Reveal>
           ))}
         </div>
@@ -334,19 +319,11 @@ export default function Index() {
           ))}
         </div>
 
-        {/* Фото клиентов и отеля */}
+        {/* Фото отеля и проживания */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-12">
-          {[
-            { src: IMAGES.doctor, cap: 'Наши пациенты' },
-            { src: IMAGES.lobby, cap: 'Сопровождение' },
-            { src: IMAGES.room, cap: 'Отель с завтраком' },
-            { src: IMAGES.lobby, cap: 'Комфортное проживание' },
-          ].map((p, i) => (
-            <Reveal key={i} delay={i * 70} className="rounded-3xl overflow-hidden relative group aspect-[4/5]">
-              <MediaImage src={p.src} alt={p.cap} className="w-full h-full object-cover group-hover:scale-105 transition duration-700" />
-              <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-jade/90 to-transparent p-4">
-                <p className="text-ivory text-sm font-medium">{p.cap}</p>
-              </div>
+          {HOTEL_PHOTOS.map((src, i) => (
+            <Reveal key={i} delay={i * 70} className="rounded-3xl overflow-hidden group aspect-[4/5]">
+              <MediaImage src={src} alt="Проживание для пациентов" className="w-full h-full object-cover group-hover:scale-105 transition duration-700" />
             </Reveal>
           ))}
         </div>
@@ -372,7 +349,7 @@ export default function Index() {
         {/* Общее фото команды */}
         <Reveal className="mt-10 rounded-[2rem] overflow-hidden relative hover-lift">
           <div className="aspect-[21/9] overflow-hidden">
-            <MediaImage src={IMAGES.lobby} alt="Команда врачей клиники" className="w-full h-full object-cover" />
+            <MediaImage src={ALL_DOCTORS_PHOTO} alt="Команда врачей клиники" className="w-full h-full object-cover" />
           </div>
           <div className="absolute inset-0 bg-gradient-to-t from-jade/85 to-transparent flex items-end p-8">
             <div className="text-ivory">
@@ -385,8 +362,8 @@ export default function Index() {
 
       {/* GALLERY */}
       <Section id="gallery" eyebrow="Галерея" title="Атмосфера клиники" sub="Интерьеры, кабинеты, оборудование и зоны отдыха для пациентов." className="gradient-soft pattern-clouds">
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-4 auto-rows-[260px]">
-          {[IMAGES.lobby, IMAGES.room, IMAGES.doctor, IMAGES.room, IMAGES.lobby, IMAGES.doctor, IMAGES.lobby, IMAGES.room].map((src, i) => (
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-4 auto-rows-[300px]">
+          {GALLERY.map((src, i) => (
             <Reveal key={i} delay={(i % 3) * 60} className={`rounded-3xl overflow-hidden group ${i === 0 ? 'md:row-span-2 md:col-span-2' : ''} ${i === 5 ? 'md:row-span-2' : ''}`}>
               <MediaImage src={src} alt="Галерея клиники" className="w-full h-full object-cover group-hover:scale-105 transition duration-700" />
             </Reveal>
@@ -398,11 +375,11 @@ export default function Index() {
           <h3 className="font-display text-3xl md:text-4xl text-jade">Сертификаты и лицензии</h3>
           <p className="text-muted-foreground mt-3">Подтверждение качества и официального статуса клиники.</p>
         </Reveal>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-5">
-          {[0, 1, 2, 3].map((i) => (
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-5 max-w-4xl mx-auto">
+          {CERTIFICATES.map((src, i) => (
             <Reveal key={i} delay={i * 70} className="glass-card rounded-2xl p-3 hover-lift">
               <div className="aspect-[3/4] overflow-hidden rounded-xl bg-cream">
-                <MediaImage src={[IMAGES.room, IMAGES.lobby, IMAGES.doctor, IMAGES.room][i]} alt={`Сертификат ${i + 1}`} className="w-full h-full object-cover" />
+                <MediaImage src={src} alt={`Сертификат ${i + 1}`} className="w-full h-full object-contain" />
               </div>
               <p className="text-center text-sm text-muted-foreground mt-3">Сертификат №{i + 1}</p>
             </Reveal>
@@ -426,15 +403,15 @@ export default function Index() {
           ))}
         </div>
 
-        {/* Видео-отзывы */}
+        {/* Фото довольных пациентов */}
         <Reveal className="text-center mt-16 mb-8">
-          <h3 className="font-display text-3xl md:text-4xl text-jade">Видео-отзывы</h3>
-          <p className="text-muted-foreground mt-3">Истории пациентов о лечении в нашей клинике.</p>
+          <h3 className="font-display text-3xl md:text-4xl text-jade">Наши счастливые пациенты</h3>
+          <p className="text-muted-foreground mt-3">Люди, которые доверили нам свою улыбку.</p>
         </Reveal>
-        <div className="grid md:grid-cols-2 gap-6">
-          {REVIEW_VIDEOS.map((v, i) => (
-            <Reveal key={i} delay={i * 100} className="rounded-[2rem] overflow-hidden shadow-xl border border-gold/20 aspect-video hover-lift">
-              <AutoVideo src={v} poster={[IMAGES.doctor, IMAGES.room][i]} className="w-full h-full object-cover" />
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+          {FEEDBACK_PHOTOS.map((src, i) => (
+            <Reveal key={i} delay={i * 100} className="rounded-[2rem] overflow-hidden shadow-xl border border-gold/20 aspect-[4/5] hover-lift">
+              <MediaImage src={src} alt={`Пациент ${i + 1}`} className="w-full h-full object-cover" />
             </Reveal>
           ))}
         </div>
@@ -444,41 +421,60 @@ export default function Index() {
       <Section id="zayavka" eyebrow="Запись на приём" title="Получите бесплатную консультацию" className="gradient-jade !text-ivory pattern-clouds-light">
         <div className="grid lg:grid-cols-2 gap-10">
           <Reveal>
-            <form onSubmit={submit} className="glass-card !bg-ivory/95 rounded-3xl p-8 space-y-4">
-              <div className="grid sm:grid-cols-2 gap-4">
-                <Input required placeholder="Имя" className="bg-white rounded-xl h-12" />
-                <Input required placeholder="Телефон" className="bg-white rounded-xl h-12" />
+            <form onSubmit={submit} className="bg-white rounded-[2rem] p-8 shadow-2xl space-y-5">
+              <div>
+                <p className="font-display text-2xl text-jade">Оставьте заявку</p>
+                <p className="text-sm text-muted-foreground mt-1">Перезвоним и составим план лечения бесплатно</p>
               </div>
               <div className="grid sm:grid-cols-2 gap-4">
-                <Input placeholder="Город" className="bg-white rounded-xl h-12" />
-                <Input placeholder="Желаемое лечение" className="bg-white rounded-xl h-12" />
+                <div className="relative">
+                  <Icon name="User" size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-jade/40" />
+                  <Input required placeholder="Имя" className="bg-cream/40 border-border rounded-xl h-12 pl-11" />
+                </div>
+                <div className="relative">
+                  <Icon name="Phone" size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-jade/40" />
+                  <Input required placeholder="Телефон" className="bg-cream/40 border-border rounded-xl h-12 pl-11" />
+                </div>
               </div>
-              <Input placeholder="Мессенджер для связи" className="bg-white rounded-xl h-12" />
-              <Textarea placeholder="Комментарий" className="bg-white rounded-xl min-h-24" />
-              <Button type="submit" className="w-full bg-jade text-ivory rounded-full h-12 text-base hover:opacity-90">Отправить заявку</Button>
-              <p className="text-xs text-jade/60 text-center">Нажимая кнопку, вы соглашаетесь с обработкой персональных данных</p>
+              <div className="grid sm:grid-cols-2 gap-4">
+                <div className="relative">
+                  <Icon name="MapPin" size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-jade/40" />
+                  <Input placeholder="Город" className="bg-cream/40 border-border rounded-xl h-12 pl-11" />
+                </div>
+                <div className="relative">
+                  <Icon name="Stethoscope" size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-jade/40" />
+                  <Input placeholder="Желаемое лечение" className="bg-cream/40 border-border rounded-xl h-12 pl-11" />
+                </div>
+              </div>
+              <div className="relative">
+                <Icon name="MessageCircle" size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-jade/40" />
+                <Input placeholder="Мессенджер для связи" className="bg-cream/40 border-border rounded-xl h-12 pl-11" />
+              </div>
+              <Textarea placeholder="Комментарий" className="bg-cream/40 border-border rounded-xl min-h-24" />
+              <Button type="submit" className="w-full bg-jade text-ivory rounded-full h-12 text-base hover:opacity-90 shadow-lg shadow-jade/20">Отправить заявку</Button>
+              <p className="text-xs text-jade/50 text-center">Нажимая кнопку, вы соглашаетесь с обработкой персональных данных</p>
             </form>
           </Reveal>
 
           <Reveal delay={120} id="contacts" as="div" className="space-y-4">
             <div className="space-y-3">
               {MESSENGERS.map((m) => (
-                <a key={m.label} href={m.href} className="glass-card !bg-ivory/10 !border-ivory/20 rounded-2xl p-5 flex items-center gap-4 text-ivory hover:bg-ivory/15 transition">
-                  <div className="w-11 h-11 rounded-xl bg-gold/20 flex items-center justify-center shrink-0">
+                <a key={m.label} href={m.href} className="bg-ivory/[0.08] border border-ivory/25 rounded-2xl p-5 flex items-center gap-4 hover:bg-ivory/15 transition group">
+                  <div className="w-11 h-11 rounded-xl bg-gold/25 flex items-center justify-center shrink-0 group-hover:bg-gold/40 transition">
                     <Icon name={m.icon} size={20} className="text-gold" />
                   </div>
                   <div>
-                    <p className="text-xs opacity-70">{m.label}</p>
-                    <p className="font-medium">{m.value}</p>
+                    <p className="text-xs text-ivory/70">{m.label}</p>
+                    <p className="font-medium text-ivory">{m.value}</p>
                   </div>
                 </a>
               ))}
             </div>
-            <div className="glass-card !bg-ivory/10 !border-ivory/20 rounded-2xl p-5 text-ivory">
-              <div className="flex items-center gap-2 mb-2"><Icon name="MapPin" size={18} className="text-gold" /><span className="font-medium">Адрес</span></div>
-              <p className="text-sm opacity-80">Китай, г. Хэйхэ, в 700 м от пункта пропуска напротив г. Благовещенск</p>
+            <div className="bg-ivory/[0.08] border border-ivory/25 rounded-2xl p-5">
+              <div className="flex items-center gap-2 mb-2"><Icon name="MapPin" size={18} className="text-gold" /><span className="font-medium text-ivory">Адрес</span></div>
+              <p className="text-sm text-ivory/80">Китай, г. Хэйхэ, в 700 м от пункта пропуска напротив г. Благовещенск</p>
             </div>
-            <div className="rounded-2xl overflow-hidden h-48 border border-ivory/20">
+            <div className="rounded-2xl overflow-hidden h-48 border border-ivory/25">
               <iframe title="Карта" className="w-full h-full grayscale" src="https://yandex.ru/map-widget/v1/?ll=127.528%2C50.246&z=12" />
             </div>
           </Reveal>
