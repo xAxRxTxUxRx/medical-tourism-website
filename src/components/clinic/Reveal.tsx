@@ -14,6 +14,14 @@ export default function Reveal({ children, className = '', delay = 0, as = 'div'
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
+
+    // Если элемент уже в зоне видимости при загрузке — показываем сразу
+    const rect = el.getBoundingClientRect();
+    if (rect.top < window.innerHeight && rect.bottom > 0) {
+      setVisible(true);
+      return;
+    }
+
     const obs = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
@@ -21,10 +29,17 @@ export default function Reveal({ children, className = '', delay = 0, as = 'div'
           obs.disconnect();
         }
       },
-      { threshold: 0.12 },
+      { threshold: 0, rootMargin: '0px 0px -10% 0px' },
     );
     obs.observe(el);
-    return () => obs.disconnect();
+
+    // Страховка: в любом случае показать через 1.2с, чтобы текст не пропал
+    const timer = window.setTimeout(() => setVisible(true), 1200);
+
+    return () => {
+      obs.disconnect();
+      window.clearTimeout(timer);
+    };
   }, []);
 
   const Tag = as as React.ElementType;
