@@ -502,7 +502,7 @@ export default function Index() {
             </div>
 
             <div className="bg-ivory/[0.08] border border-ivory/25 rounded-2xl p-5">
-              <div className="flex items-center gap-2 mb-2"><Icon name="MapPin" size={18} className="text-gold" /><span className="font-medium text-ivory">Адрес</span></div>
+              <div className="flex items-center gap-2 mb-2"><Icon name="MapPin" size={18} className="text-gold" /><span className="font-medium text-[#036168]">Адрес</span></div>
               <p className="text-sm text-ivory/80">Китай, г. Хэйхэ, в 700 м от пункта пропуска напротив г. Благовещенск</p>
             </div>
             <div className="rounded-2xl overflow-hidden h-48 border border-ivory/25">
