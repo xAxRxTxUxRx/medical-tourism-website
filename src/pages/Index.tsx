@@ -297,8 +297,8 @@ export default function Index() {
                   <Icon name={s.icon} size={22} className="text-gold" />
                 </div>
               </div>
-              <h3 className="font-display text-2xl mb-2 text-ivory">{s.title}</h3>
-              <p className="text-sm text-ivory/85">{s.text}</p>
+              <h3 className="font-display text-2xl mb-2 text-[#036168]">{s.title}</h3>
+              <p className="text-sm text-[#036168]">{s.text}</p>
             </Reveal>
           ))}
         </div>
