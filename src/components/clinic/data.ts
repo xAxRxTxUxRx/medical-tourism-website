@@ -1,8 +1,12 @@
 export const IMAGES = {
-  lobby: 'https://cdn.poehali.dev/projects/3ff9815d-6a53-4b2e-baa5-723a5e088a80/files/b80a7f0b-7bcd-478d-ac6e-ef00ee43c8e1.jpg',
+  lobby: 'https://cdn.poehali.dev/projects/3ff9815d-6a53-4b2e-baa5-723a5e088a80/files/d422d50a-17ba-49cb-98c9-18c6e0d06574.jpg',
   room: 'https://cdn.poehali.dev/projects/3ff9815d-6a53-4b2e-baa5-723a5e088a80/files/2793e945-e4be-487d-987e-dc88dd52e738.jpg',
   doctor: 'https://cdn.poehali.dev/projects/3ff9815d-6a53-4b2e-baa5-723a5e088a80/files/ad9b4019-0a11-4fa2-8883-c9d73afefba5.jpg',
 };
+
+// Вставь сюда ссылку на видео для главной страницы (формат .mp4).
+// Если оставить пустым — на главной будет показано фото клиники.
+export const HERO_VIDEO = '';
 
 export const ADVANTAGES = [
   { icon: 'Landmark', title: 'Государственная клиника', text: 'Официальный статус и гарантии качества от государства Китая' },

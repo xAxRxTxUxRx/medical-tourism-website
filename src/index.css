@@ -4,42 +4,42 @@
 
 @layer base {
   :root {
-    --background: 48 33% 97%;
-    --foreground: 162 30% 14%;
+    --background: 210 40% 98%;
+    --foreground: 215 45% 16%;
 
     --card: 0 0% 100%;
-    --card-foreground: 162 30% 14%;
+    --card-foreground: 215 45% 16%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 162 30% 14%;
+    --popover-foreground: 215 45% 16%;
 
-    --primary: 162 38% 26%;
-    --primary-foreground: 48 40% 97%;
+    --primary: 212 56% 36%;
+    --primary-foreground: 210 40% 98%;
 
-    --secondary: 158 30% 90%;
-    --secondary-foreground: 162 38% 22%;
+    --secondary: 206 42% 92%;
+    --secondary-foreground: 212 56% 30%;
 
-    --muted: 150 22% 93%;
-    --muted-foreground: 162 12% 42%;
+    --muted: 208 36% 94%;
+    --muted-foreground: 213 18% 46%;
 
-    --accent: 42 55% 58%;
-    --accent-foreground: 162 38% 16%;
+    --accent: 188 52% 52%;
+    --accent-foreground: 215 45% 16%;
 
     --destructive: 0 72% 50%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 156 22% 86%;
-    --input: 156 22% 86%;
-    --ring: 162 38% 30%;
+    --border: 208 32% 88%;
+    --input: 208 32% 88%;
+    --ring: 212 56% 40%;
 
     --radius: 1rem;
 
-    --jade: 162 42% 28%;
-    --celadon: 152 30% 70%;
-    --turquoise: 178 38% 60%;
-    --ivory: 48 38% 97%;
-    --cream: 42 44% 92%;
-    --gold: 42 58% 56%;
+    --jade: 212 56% 34%;
+    --celadon: 206 48% 76%;
+    --turquoise: 188 52% 56%;
+    --ivory: 210 40% 98%;
+    --cream: 206 44% 94%;
+    --gold: 188 48% 48%;
 
     --sidebar-background: 0 0% 98%;
 
@@ -133,15 +133,15 @@
   .gradient-jade {
     background: linear-gradient(
       135deg,
-      hsl(162 42% 24%) 0%,
-      hsl(170 38% 32%) 100%
+      hsl(214 60% 30%) 0%,
+      hsl(196 56% 42%) 100%
     );
   }
   .gradient-soft {
     background: linear-gradient(
       160deg,
-      hsl(48 38% 97%) 0%,
-      hsl(150 30% 93%) 100%
+      hsl(210 40% 98%) 0%,
+      hsl(200 44% 93%) 100%
     );
   }
   .text-balance {
@@ -183,7 +183,7 @@
   }
   .hover-lift:hover {
     transform: translateY(-8px);
-    box-shadow: 0 24px 60px -20px hsl(162 42% 28% / 0.35);
+    box-shadow: 0 24px 60px -20px hsl(214 56% 36% / 0.35);
   }
 }
 

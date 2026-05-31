@@ -6,7 +6,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { toast } from 'sonner';
 import Calculator from '@/components/clinic/Calculator';
 import {
-  IMAGES, ADVANTAGES, SERVICE_GROUPS, PRICES, IMPLANT_STEPS,
+  IMAGES, HERO_VIDEO, ADVANTAGES, SERVICE_GROUPS, PRICES, IMPLANT_STEPS,
   JOURNEY, DOCTORS, REVIEWS, MESSENGERS,
 } from '@/components/clinic/data';
 
@@ -46,6 +46,8 @@ const Section = ({ id, eyebrow, title, sub, children, className = '' }: SectionP
 
 export default function Index() {
   const [menu, setMenu] = useState(false);
+  const [videoFailed, setVideoFailed] = useState(false);
+  const showVideo = HERO_VIDEO && !videoFailed;
 
   const submit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -85,7 +87,20 @@ export default function Index() {
       {/* HERO */}
       <section id="top" className="relative min-h-screen flex items-center justify-center pt-16">
         <div className="absolute inset-0">
-          <img src={IMAGES.lobby} alt="Клиника Доверие" className="w-full h-full object-cover" />
+          {showVideo ? (
+            <video
+              src={HERO_VIDEO}
+              autoPlay
+              muted
+              loop
+              playsInline
+              poster={IMAGES.lobby}
+              onError={() => setVideoFailed(true)}
+              className="w-full h-full object-cover"
+            />
+          ) : (
+            <img src={IMAGES.lobby} alt="Клиника Доверие" className="w-full h-full object-cover" />
+          )}
           <div className="absolute inset-0 bg-gradient-to-b from-jade/85 via-jade/65 to-jade/90" />
         </div>
         <div className="relative z-10 text-center text-ivory px-5 max-w-4xl animate-fade-up">
