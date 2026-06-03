@@ -12,7 +12,7 @@ import {
   GALLERY, CERTIFICATES, ALL_DOCTORS_PHOTO, HOTEL_PHOTOS, FEEDBACK_PHOTOS, FEEDBACK_VIDEO,
   ADVANTAGES, DENTAL_CATEGORIES, CROWN_TYPES, IMPLANT_STEPS,
   DIRECTIONS, JOURNEY_STEPS, JOURNEY_BONUSES,
-  DOCTORS, REVIEWS, MESSENGERS, QR_CODES,
+  DOCTORS, REVIEWS, MESSENGERS, PHONES, CONTACT_EMAIL,
 } from '@/components/clinic/data';
 
 const NAV = [
@@ -50,6 +50,7 @@ const Section = ({ id, eyebrow, title, sub, children, className = '' }: SectionP
 );
 
 const fmt = (n: number) => n.toLocaleString('ru-RU') + ' ₽';
+const fmtRange = (min: number, max?: number) => (max ? `от ${fmt(min)} до ${fmt(max)}` : `от ${fmt(min)}`);
 
 function AutoVideo({ src, poster, className }: { src: string; poster: string; className?: string }) {
   const [failed, setFailed] = useState(false);
@@ -83,9 +84,9 @@ export default function Index() {
       {/* HEADER */}
       <header className="fixed top-0 inset-x-0 z-50 glass-card border-x-0 border-t-0">
         <div className="max-w-6xl mx-auto px-5 h-16 flex items-center justify-between">
-          <a href="#top" className="flex items-baseline gap-1">
+          <a href="#top" className="flex items-center gap-3">
+            <img src="/images/logo_128.png" alt="Доверие" className="h-9 w-9" />
             <span className="font-display text-2xl text-jade tracking-wide">Доверие</span>
-            <span className="text-gold text-lg">❖</span>
           </a>
           <nav className="hidden lg:flex items-center gap-6 text-sm">
             {NAV.map((n) => (
@@ -119,7 +120,7 @@ export default function Index() {
             Государственная клиника · Хэйхэ, Китай
           </div>
           <h1 className="font-display text-5xl md:text-7xl leading-[1.05] mb-6 text-balance">
-            Государственная стоматологическая клиника <span className="text-gold">«Доверие»</span> в Китае
+            Государственная стоматологическая клиника <span className="text-gold">«Доверие»</span> в Хэйхэ, Китай
           </h1>
           <p className="text-lg md:text-xl text-ivory/85 max-w-2xl mx-auto mb-10 text-balance">
             Лечение зубов, косметология и медицина по ценам на 40–60% ниже российских при европейском уровне качества.
@@ -187,7 +188,7 @@ export default function Index() {
                           <p className="text-sm text-muted-foreground">{s.desc}</p>
                         </div>
                         <div className="text-right whitespace-nowrap">
-                          <p className="text-jade font-semibold font-display text-xl leading-none">от {fmt(s.price)}</p>
+                          <p className="text-jade font-semibold font-display text-xl leading-none">{fmtRange(s.price, s.priceMax)}</p>
                           <p className="text-xs text-muted-foreground line-through mt-1">в РФ {fmt(s.ru)}</p>
                         </div>
                       </div>
@@ -470,43 +471,63 @@ export default function Index() {
             </form>
           </Reveal>
 
-          <Reveal delay={120} id="contacts" as="div" className="space-y-4">
-            <div className="grid sm:grid-cols-2 gap-3">
-              {MESSENGERS.map((m) => (
-                <a key={m.label} href={m.href} className="bg-ivory/[0.08] border border-ivory/25 rounded-2xl p-5 flex items-center gap-4 hover:bg-ivory/15 transition group">
-                  <div className="w-11 h-11 rounded-xl bg-gold/25 flex items-center justify-center shrink-0 group-hover:bg-gold/40 transition">
-                    <Icon name={m.icon} size={20} className="text-gold" />
+          <Reveal delay={120} id="contacts" as="div" className="space-y-6">
+            <div className="grid sm:grid-cols-2 gap-4">
+              {PHONES.map((p) => (
+                <a key={p.value} href={p.href} className="bg-ivory/[0.08] border border-ivory/25 rounded-2xl p-5 flex items-start gap-4 hover:bg-ivory/15 transition">
+                  <div className="w-11 h-11 rounded-xl bg-gold/25 flex items-center justify-center">
+                    <Icon name="Phone" size={20} className="text-gold" />
                   </div>
-                  <div className="min-w-0">
-                    <p className="text-xs text-[#036168]">{m.label}</p>
-                    <p className="font-medium truncate text-[#036168]">{m.value}</p>
+                  <div>
+                    <p className="text-xs text-ivory/70">{p.label}</p>
+                    <p className="font-medium text-ivory">{p.value}</p>
+                    {p.note && <p className="text-xs text-ivory/70 mt-1">{p.note}</p>}
                   </div>
                 </a>
               ))}
             </div>
 
-            {/* QR-коды */}
+            <a href={CONTACT_EMAIL.href} className="bg-ivory/[0.08] border border-ivory/25 rounded-2xl p-5 flex items-center gap-4 hover:bg-ivory/15 transition">
+              <div className="w-11 h-11 rounded-xl bg-gold/25 flex items-center justify-center">
+                <Icon name="Mail" size={20} className="text-gold" />
+              </div>
+              <div>
+                <p className="text-xs text-ivory/70">{CONTACT_EMAIL.label}</p>
+                <p className="font-medium text-ivory">{CONTACT_EMAIL.value}</p>
+              </div>
+            </a>
+
             <div className="bg-ivory/[0.08] border border-ivory/25 rounded-2xl p-5">
-              <p className="font-medium text-ivory mb-1">Свяжитесь с нами по QR-коду</p>
-              <p className="text-xs text-ivory/70 mb-4">Отсканируйте камерой телефона в нужном приложении</p>
-              <div className="grid grid-cols-3 sm:grid-cols-5 gap-3">
-                {QR_CODES.map((q) => (
-                  <div key={q.label} className="text-center">
-                    <div className="rounded-xl overflow-hidden bg-white p-1.5 aspect-square">
-                      <MediaImage src={q.image} alt={`QR ${q.label}`} className="w-full h-full object-contain" />
+              <p className="font-medium text-ivory mb-3">Мессенджеры и QR-коды</p>
+              <div className="grid sm:grid-cols-3 gap-4">
+                {MESSENGERS.map((m) => (
+                  <a key={m.label} href={m.href} className="rounded-2xl border border-ivory/20 p-4 bg-ivory/[0.04] hover:bg-ivory/10 transition flex flex-col gap-3">
+                    <div className="flex items-center gap-3">
+                      <div className="w-9 h-9 rounded-xl bg-gold/25 flex items-center justify-center">
+                        <Icon name={m.icon} size={18} className="text-gold" />
+                      </div>
+                      <div>
+                        <p className="text-sm text-ivory">{m.label}</p>
+                        <p className="text-xs text-ivory/70">{m.value}</p>
+                      </div>
                     </div>
-                    <p className="text-[11px] text-ivory/85 mt-1.5 leading-tight">{q.label}</p>
-                  </div>
+                    <div className="rounded-xl bg-white/95 p-3 aspect-square flex items-center justify-center">
+                      <MediaImage src={m.qr} alt={`QR ${m.label}`} className="w-full h-full object-contain" />
+                    </div>
+                    <span className="text-xs text-ivory/70">Нажмите, чтобы открыть</span>
+                  </a>
                 ))}
               </div>
             </div>
 
             <div className="bg-ivory/[0.08] border border-ivory/25 rounded-2xl p-5">
-              <div className="flex items-center gap-2 mb-2"><Icon name="MapPin" size={18} className="text-gold" /><span className="font-medium text-[#036168]">Адрес</span></div>
-              <p className="text-sm text-[#036168]">Китай, г. Хэйхэ, в 700 м от пункта пропуска напротив г. Благовещенск</p>
+              <div className="flex items-center gap-2 mb-2"><Icon name="MapPin" size={18} className="text-gold" /><span className="font-medium text-ivory">Адрес</span></div>
+              <p className="text-sm text-ivory/80">Провинция Хэйлунцзян, Хэйхэ, улица Чжунъян, Китай</p>
+              <p className="text-sm text-ivory/80">Координаты: 50.243901, 127.504512</p>
+              <p className="text-sm text-ivory/80 mt-2">г. Хэйхэ, в 700 м от пункта пропуска напротив г. Благовещенск</p>
             </div>
             <div className="rounded-2xl overflow-hidden h-48 border border-ivory/25">
-              <iframe title="Карта" className="w-full h-full grayscale" src="https://yandex.ru/map-widget/v1/?ll=127.528%2C50.246&z=12" />
+              <iframe title="Карта" className="w-full h-full grayscale" src="https://yandex.ru/map-widget/v1/?ll=127.504512%2C50.243901&z=16&pt=127.504512,50.243901,pm2rdm" />
             </div>
           </Reveal>
         </div>
@@ -516,9 +537,12 @@ export default function Index() {
       <footer className="bg-jade text-ivory/70 py-12 px-5 relative overflow-hidden">
         <div className="absolute inset-0 pattern-clouds-light opacity-40" />
         <div className="max-w-6xl mx-auto flex flex-col md:flex-row justify-between gap-6 items-center text-center md:text-left relative">
-          <div>
-            <p className="font-display text-2xl text-ivory">Доверие <span className="text-gold">❖</span></p>
-            <p className="text-sm mt-1">Государственная клиника · Хэйхэ, Китай</p>
+          <div className="flex items-center gap-3">
+            <img src="/images/logo_128.png" alt="Доверие" className="h-9 w-9" />
+            <div>
+              <p className="font-display text-2xl text-ivory">Доверие</p>
+              <p className="text-sm mt-1">Государственная клиника · Хэйхэ, Китай</p>
+            </div>
           </div>
           <p className="text-sm">© {new Date().getFullYear()} Клиника «Доверие». Все права защищены.</p>
         </div>
