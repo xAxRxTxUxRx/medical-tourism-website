@@ -67,8 +67,8 @@ export const DENTAL_CATEGORIES = [
         id: 'orthopedics',
         icon: 'Crown',
         title: 'Ортопедическая стоматология',
-        image: `${IMG}/uslugi_2.jpg`,
-        intro: 'Сочетаем функциональность, комфорт и эстетику. Используем передовые технологии и материалы для идеального соответствия.',
+        image: `${IMG}/viniri.png`,
+        intro: 'Отделение ортопедии предлагает протезирование зубов любой сложности, включая мостовидные протезы и коронки из драгоценных металлов.',
         services: [
             {
                 name: 'Металлокерамическая коронка',
@@ -95,7 +95,7 @@ export const DENTAL_CATEGORIES = [
         icon: 'Drill',
         title: 'Имплантация',
         image: `${IMG}/uslugi_3.jpg`,
-        intro: 'Единственный метод, который предотвращает атрофию костной ткани. Документированная выживаемость имплантов 98–99%.',
+        intro: 'Отделение имплантологии оснащено оборудованием KaVo Dental GmbH и имеет большой опыт в проведении операций по имплантации зубов.',
         services: [
             {name: 'Имплантация «под ключ»', desc: 'Титановый имплант + абатмент + коронка', price: 28000, ru: 65000},
             {
@@ -132,7 +132,7 @@ export const DENTAL_CATEGORIES = [
         id: 'therapy',
         icon: 'Stethoscope',
         title: 'Терапевтическая стоматология',
-        image: `${IMG}/uslugi_1.jpg`,
+        image: `${IMG}/chistka.png`,
         services: [
             {
                 name: 'Лечение кариеса',
@@ -143,7 +143,7 @@ export const DENTAL_CATEGORIES = [
             },
             {name: 'Лечение эрозии эмали', desc: 'Восстановление и укрепление эмали зуба', price: 2000, ru: 5000},
             {
-                name: 'Чистка зубов',
+                name: 'Ультразвуковая чистка зубов',
                 desc: 'Бережное удаление зубного камня и налёта современными технологиями',
                 price: 1800,
                 priceMax: 3000,
@@ -157,6 +157,30 @@ export const DENTAL_CATEGORIES = [
             },
         ],
     },
+    {
+        id: 'therapy',
+        icon: 'Stethoscope',
+        title: 'Другие стоматологические услуги',
+        image: `${IMG}/other.jpg`,
+        services: [
+            {
+                name: 'Пародонтология',
+                desc: 'Отделение пародонтологии проводит комплексное лечение заболеваний десен с использованием швейцарского оборудования и ультразвуковых установок.',
+            },
+            {
+                name: 'Ортодонтия: исправление прикуса',
+                desc: 'Отделение ортодонтии помогает пациентам с неправильным прикусом и дисфункциями челюсти, используя современные брекет-системы.',
+            },
+            {
+                name: 'Хирургическая стоматология',
+                desc: 'От удаления зубов до сложных операций',
+            },
+            {
+                name: 'Эстетическая и детская стоматология',
+                desc: '',
+            },
+        ],
+    },
 ];
 
 // Подробно про виды коронок (карточки с описанием)
@@ -164,7 +188,7 @@ export const CROWN_TYPES = [
     {
         icon: 'Gem',
         title: 'Цельнокерамические (диоксид циркония)',
-        image: `${IMG}/uslugi_2.jpg`,
+        image: `${IMG}/bezmetalo.png`,
         text: 'Один из самых прочных и эстетичных вариантов восстановления. Высокая прозрачность имитирует естественный цвет зубов.',
         points: ['Высокая прочность и долговечность', 'Незаметны в полости рта', 'Биосовместимы, без аллергии', 'Лёгкие, не нагружают дёсны'],
         price: 8800,
@@ -172,7 +196,7 @@ export const CROWN_TYPES = [
     {
         icon: 'Shield',
         title: 'Металлокерамические',
-        image: `${IMG}/uslugi_3.jpg`,
+        image: `${IMG}/metalo.png`,
         text: 'Металлический каркас и керамическое покрытие: прочность металла и эстетика керамики. Изготавливаются по индивидуальному слепку.',
         points: ['Прочность для жевательных нагрузок', 'Эстетика, близкая к натуральной', 'Универсальны для передних и жевательных зубов', 'Быстрая адаптация и комфорт'],
         price: 2600,
@@ -287,12 +311,12 @@ export const JOURNEY_BONUSES = [
 ];
 
 export const DOCTORS = [
-  { name: 'Вэй Хунфэй', role: 'Главный врач, стоматолог-хирург, ортопед', exp: 'Стаж работы 20 лет', photo: `${IMG}/${encodeURIComponent('ВэйХунфэй')}.png` },
-  { name: 'Чжао Дун', role: 'Ведущий врач', exp: '', photo: `${IMG}/${encodeURIComponent('ЧжаоДун')}.png` },
-  { name: 'Лю Лян', role: 'Специалист по реставрации', exp: '', photo: `${IMG}/${encodeURIComponent('ЛюЛян')}.png` },
-  { name: 'Ван Лянь', role: 'Специалист по реставрации', exp: '', photo: `${IMG}/${encodeURIComponent('ВанЛянь')}.png` },
-  { name: 'Линь Хуа', role: 'Терапевт-эндодонтист', exp: '', photo: `${IMG}/${encodeURIComponent('ЛиньХуа')}.png` },
-  { name: 'Хао Синли', role: 'Ортодонт', exp: '', photo: `${IMG}/${encodeURIComponent('ХаоСинли')}.png` },
+  { name: 'Вэй Хунфэй', role: 'Главный врач, стоматолог-хирург, ортопед', exp: 'Стаж работы 20 лет', photo: `${IMG}/${encodeURIComponent('ВэйХунфэй')}.jpg` },
+  { name: 'Чжао Дун', role: 'Ведущий врач', exp: '', photo: `${IMG}/${encodeURIComponent('ЧжаоДун')}.jpg` },
+  { name: 'Лю Лян', role: 'Специалист по реставрации', exp: '', photo: `${IMG}/${encodeURIComponent('ЛюЛян')}.jpg` },
+  { name: 'Ван Лянь', role: 'Специалист по реставрации', exp: '', photo: `${IMG}/${encodeURIComponent('ВанЛянь')}.jpg` },
+  { name: 'Линь Хуа', role: 'Терапевт-эндодонтист', exp: '', photo: `${IMG}/${encodeURIComponent('ЛиньХуа')}.jpg` },
+  { name: 'Хао Синли', role: 'Ортодонт', exp: '', photo: `${IMG}/${encodeURIComponent('ХаоСинли')}.jpg` },
 ];
 
 export const REVIEWS = [
@@ -319,35 +343,35 @@ export const MESSENGERS = [
         icon: 'MessageCircle',
         label: 'Max',
         value: 'Написать в Max',
-        href: '#',
+        href: 'https://max.ru/u/f9LHodD0cOKjZbUlgzeYxXUIBV75FD5XgnhL9pL9E5nnWcYCUmKtRvqrGLo',
         qr: `${IMG}/max.png`
     },
     {
         icon: 'Send',
         label: 'Telegram',
         value: 'Написать в Telegram',
-        href: '#',
+        href: 'https://t.me/Rebreding',
         qr: `${IMG}/tg.png`
     },
     {
         icon: 'MessageSquare',
         label: 'WeChat',
         value: 'Написать в WeChat',
-        href: '#',
+        href: 'https://u.wechat.com/MLgdAEKXukY9rxXHq4_RGcs?s=2',
         qr: `${IMG}/wechat_1.png`
     },
     {
         icon: 'MessageSquare',
         label: 'WeChat (группа)',
         value: 'Чат в WeChat',
-        href: '#',
+        href: 'https://u.wechat.com/kAWiM6DpZhOqzL4hImUAGu4?s=3',
         qr: `${IMG}/wechat_2.png`
     },
     {
         icon: 'Users',
         label: 'ВКонтакте',
         value: 'Перейти во ВКонтакте',
-        href: '#',
+        href: 'https://vk.ru/id836676811',
         qr: `${IMG}/vk.png`
     },
 ];
@@ -370,12 +394,18 @@ export const CONTACT_EMAIL = {
     href: 'mailto:kajia.1981@163.com'
 };
 
+export const EMAILJS_CONFIG = {
+    serviceId: 'service_l7jwztd',
+    templateId: 'template_ioqzlr8',
+    publicKey: 'iVBTKSDCA9MbTeYYU',
+    toEmail: 'kajia.1981@163.com'
+};
 
 // Все стоматологические услуги с ценами — для калькулятора (price — Китай, ru — Россия)
 export const PRICES = [
     {name: 'Лечение кариеса', price: 1000, ru: 5500},
     {name: 'Лечение эрозии эмали', price: 2000, ru: 5000},
-    {name: 'Чистка зубов', price: 1800, ru: 6000},
+    {name: 'Ультразвуковая чистка зубов', price: 1800, ru: 6000},
     {name: 'Герметизация фиссур', price: 1500, ru: 4000},
     {name: 'Металлокерамическая коронка', price: 2600, ru: 6500},
     {name: 'Циркониевая коронка', price: 8800, ru: 22000},

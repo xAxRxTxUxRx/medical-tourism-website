@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { toast } from 'sonner';
+import emailjs from '@emailjs/browser';
 import Calculator from '@/components/clinic/Calculator';
 import MediaImage from '@/components/clinic/MediaImage';
 import Reveal from '@/components/clinic/Reveal';
@@ -12,7 +13,7 @@ import {
   GALLERY, CERTIFICATES, ALL_DOCTORS_PHOTO, HOTEL_PHOTOS, FEEDBACK_PHOTOS, FEEDBACK_VIDEO,
   ADVANTAGES, DENTAL_CATEGORIES, CROWN_TYPES, IMPLANT_STEPS,
   DIRECTIONS, JOURNEY_STEPS, JOURNEY_BONUSES,
-  DOCTORS, REVIEWS, MESSENGERS, PHONES, CONTACT_EMAIL,
+  DOCTORS, REVIEWS, MESSENGERS, PHONES, CONTACT_EMAIL, EMAILJS_CONFIG,
 } from '@/components/clinic/data';
 
 const NAV = [
@@ -22,7 +23,7 @@ const NAV = [
   { id: 'doctors', label: 'Врачи' },
   { id: 'gallery', label: 'Галерея' },
   { id: 'reviews', label: 'Отзывы' },
-  { id: 'contacts', label: 'Контакты' },
+  { id: 'zayavka', label: 'Контакты' },
 ];
 
 type SectionProps = {
@@ -35,7 +36,7 @@ type SectionProps = {
 };
 
 const Section = ({ id, eyebrow, title, sub, children, className = '' }: SectionProps) => (
-  <section id={id} className={`py-20 md:py-28 px-5 ${className}`}>
+  <section id={id} className={`py-10 md:py-14 px-5 ${className}`}>
     <div className="max-w-6xl mx-auto">
       {(eyebrow || title) && (
         <Reveal className="text-center mb-14">
@@ -73,10 +74,49 @@ function AutoVideo({ src, poster, className }: { src: string; poster: string; cl
 
 export default function Index() {
   const [menu, setMenu] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [form, setForm] = useState({
+    name: '',
+    phone: '',
+    city: '',
+    treatment: '',
+    messenger: '',
+    comment: '',
+  });
 
-  const submit = (e: React.FormEvent) => {
+  const onChange = (field: keyof typeof form) =>
+    (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
+      setForm((prev) => ({ ...prev, [field]: e.target.value }));
+
+  const submit = async (e: React.FormEvent) => {
     e.preventDefault();
-    toast.success('Заявка отправлена! Мы свяжемся с вами в ближайшее время.');
+    if (isSubmitting) return;
+
+    setIsSubmitting(true);
+    try {
+      await emailjs.send(
+        EMAILJS_CONFIG.serviceId,
+        EMAILJS_CONFIG.templateId,
+        {
+          to_email: EMAILJS_CONFIG.toEmail,
+          name: form.name,
+          phone: form.phone,
+          city: form.city || '—',
+          treatment: form.treatment || '—',
+          messenger: form.messenger || '—',
+          comment: form.comment || '—',
+          submitted_at: new Date().toLocaleString('ru-RU'),
+        },
+        { publicKey: EMAILJS_CONFIG.publicKey },
+      );
+      toast.success('Заявка отправлена! Мы свяжемся с вами в ближайшее время.');
+      setForm({ name: '', phone: '', city: '', treatment: '', messenger: '', comment: '' });
+    } catch (error) {
+      toast.error('Не удалось отправить заявку. Попробуйте позже.');
+      console.error(error);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -123,7 +163,7 @@ export default function Index() {
             Государственная стоматологическая клиника <span className="text-gold">«Доверие»</span> в Хэйхэ, Китай
           </h1>
           <p className="text-lg md:text-xl text-ivory/85 max-w-2xl mx-auto mb-10 text-balance">
-            Лечение зубов, косметология и медицина по ценам на 40–60% ниже российских при европейском уровне качества.
+            Лечение зубов, косметология и медицина по ценам до 60% ниже российских при европейском уровне качества.
           </p>
           <div className="flex flex-wrap gap-4 justify-center mb-12">
             <a href="#zayavka" className="bg-gold text-jade px-8 py-4 rounded-full font-semibold hover:scale-105 transition shadow-xl">Получить консультацию</a>
@@ -187,10 +227,16 @@ export default function Index() {
                           <p className="font-medium text-jade">{s.name}</p>
                           <p className="text-sm text-muted-foreground">{s.desc}</p>
                         </div>
-                        <div className="text-right whitespace-nowrap">
-                          <p className="text-jade font-semibold font-display text-xl leading-none">{fmtRange(s.price, s.priceMax)}</p>
-                          <p className="text-xs text-muted-foreground line-through mt-1">в РФ {fmt(s.ru)}</p>
-                        </div>
+                        {s.price != null && (
+                            <div className="text-right whitespace-nowrap">
+                              <p className="text-jade font-semibold font-display text-xl leading-none">
+                                {fmtRange(s.price, s.priceMax)}
+                              </p>
+                              <p className="text-xs text-muted-foreground line-through mt-1">
+                                в РФ {fmt(s.ru)}
+                              </p>
+                            </div>
+                        )}
                       </div>
                     ))}
                   </div>
@@ -274,7 +320,7 @@ export default function Index() {
                   <h4 className="font-display text-2xl text-jade">{d.title}</h4>
                 </div>
                 <p className="text-sm text-muted-foreground mb-4">{d.text}</p>
-                <ul className="space-y-2 mt-auto">
+                <ul className="space-y-2">
                   {d.items.map((it) => (
                     <li key={it} className="flex items-start gap-2 text-sm text-jade/90">
                       <Icon name="Check" size={15} className="text-gold mt-0.5 shrink-0" />{it}
@@ -444,90 +490,137 @@ export default function Index() {
               <div className="grid sm:grid-cols-2 gap-4">
                 <div className="relative">
                   <Icon name="User" size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-jade/40 z-10" />
-                  <Input required placeholder="Имя" className="bg-cream/40 border-border rounded-xl h-12 pl-11 text-jade placeholder:text-jade/40" />
+                  <Input
+                    required
+                    placeholder="Имя"
+                    value={form.name}
+                    onChange={onChange('name')}
+                    className="bg-cream/40 border-border rounded-xl h-12 pl-11 text-jade placeholder:text-jade/40"
+                  />
                 </div>
                 <div className="relative">
                   <Icon name="Phone" size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-jade/40 z-10" />
-                  <Input required placeholder="Телефон" className="bg-cream/40 border-border rounded-xl h-12 pl-11 text-jade placeholder:text-jade/40" />
+                  <Input
+                    required
+                    placeholder="Телефон"
+                    value={form.phone}
+                    onChange={onChange('phone')}
+                    className="bg-cream/40 border-border rounded-xl h-12 pl-11 text-jade placeholder:text-jade/40"
+                  />
                 </div>
               </div>
               <div className="grid sm:grid-cols-2 gap-4">
                 <div className="relative">
                   <Icon name="MapPin" size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-jade/40 z-10" />
-                  <Input placeholder="Город" className="bg-cream/40 border-border rounded-xl h-12 pl-11 text-jade placeholder:text-jade/40" />
+                  <Input
+                    placeholder="Город"
+                    value={form.city}
+                    onChange={onChange('city')}
+                    className="bg-cream/40 border-border rounded-xl h-12 pl-11 text-jade placeholder:text-jade/40"
+                  />
                 </div>
                 <div className="relative">
                   <Icon name="Stethoscope" size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-jade/40 z-10" />
-                  <Input placeholder="Желаемое лечение" className="bg-cream/40 border-border rounded-xl h-12 pl-11 text-jade placeholder:text-jade/40" />
+                  <Input
+                    placeholder="Желаемое лечение"
+                    value={form.treatment}
+                    onChange={onChange('treatment')}
+                    className="bg-cream/40 border-border rounded-xl h-12 pl-11 text-jade placeholder:text-jade/40"
+                  />
                 </div>
               </div>
               <div className="relative">
                 <Icon name="MessageCircle" size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-jade/40 z-10" />
-                <Input placeholder="Мессенджер для связи" className="bg-cream/40 border-border rounded-xl h-12 pl-11 text-jade placeholder:text-jade/40" />
+                <Input
+                  placeholder="Мессенджер для связи"
+                  value={form.messenger}
+                  onChange={onChange('messenger')}
+                  className="bg-cream/40 border-border rounded-xl h-12 pl-11 text-jade placeholder:text-jade/40"
+                />
               </div>
-              <Textarea placeholder="Комментарий" className="bg-cream/40 border-border rounded-xl min-h-24 text-jade placeholder:text-jade/40" />
-              <Button type="submit" className="w-full bg-jade text-ivory rounded-full h-12 text-base hover:opacity-90 shadow-lg shadow-jade/20">Отправить заявку</Button>
+              <Textarea
+                placeholder="Комментарий"
+                value={form.comment}
+                onChange={onChange('comment')}
+                className="bg-cream/40 border-border rounded-xl min-h-24 text-jade placeholder:text-jade/40"
+              />
+              <Button
+                type="submit"
+                disabled={isSubmitting}
+                className="w-full bg-jade text-ivory rounded-full h-12 text-base hover:opacity-90 shadow-lg shadow-jade/20"
+              >
+                {isSubmitting ? 'Отправка...' : 'Отправить заявку'}
+              </Button>
               <p className="text-xs text-jade/50 text-center">Нажимая кнопку, вы соглашаетесь с обработкой персональных данных</p>
             </form>
+            <div className="bg-white rounded-2xl p-5 border border-border/60 mt-6">
+              <div className="flex items-center gap-2 mb-2"><Icon name="MapPin" size={18} className="text-gold" /><span className="font-medium text-jade">Адрес</span></div>
+              <p className="text-sm text-muted-foreground">Провинция Хэйлунцзян, Хэйхэ, улица Чжунъян, Китай</p>
+              <p className="text-sm text-muted-foreground">Координаты: 50.243901, 127.504512</p>
+              <p className="text-sm text-muted-foreground mt-2">г. Хэйхэ, в 700 м от пункта пропуска напротив г. Благовещенск</p>
+            </div>
+            <div className="rounded-2xl overflow-hidden h-60 border border-border/60 bg-white mt-4">
+              <iframe
+                  title="Карта"
+                  className="w-full h-full"
+                  src="https://yandex.ru/map-widget/v1/?ll=127.504432%2C50.243928&pt=127.504512,50.243901,pm2rdm&z=21"
+              />
+            </div>
+            <a
+                href="https://yandex.ru/maps/org/doveriye/137555786743/?from=mapframe&ll=127.504432%2C50.243928&pt=127.504512%2C50.243901&source=mapframe&utm_source=mapframe&z=21"
+                target="_blank"
+                rel="noreferrer"
+                className="inline-flex items-center gap-2 text-sm font-medium text-jade hover:text-jade/80 mt-3"
+            >
+              Открыть в Яндекс Картах
+              <Icon name="ArrowUpRight" size={16} />
+            </a>
           </Reveal>
 
-          <Reveal delay={120} id="contacts" as="div" className="space-y-6">
-            <div className="grid sm:grid-cols-2 gap-4">
-              {PHONES.map((p) => (
-                <a key={p.value} href={p.href} className="bg-ivory/[0.08] border border-ivory/25 rounded-2xl p-5 flex items-start gap-4 hover:bg-ivory/15 transition">
-                  <div className="w-11 h-11 rounded-xl bg-gold/25 flex items-center justify-center">
-                    <Icon name="Phone" size={20} className="text-gold" />
+          <Reveal delay={120} id="contacts" as="div" className="space-y-6 text-jade">
+            <div className="bg-white rounded-2xl p-5 border border-border/60">
+              <div className="flex items-start gap-4">
+                <div className="w-11 h-11 rounded-xl bg-gold/15 flex items-center justify-center shrink-0">
+                  <Icon name="Phone" size={20} className="text-gold" />
+                </div>
+                <div>
+                  <p className="text-xs text-muted-foreground">Телефоны</p>
+                  <div className="mt-2 space-y-2">
+                    {PHONES.map((p) => (
+                      <div key={p.value}>
+                        <a href={p.href} className="font-medium text-jade hover:underline">
+                          {p.value}
+                        </a>
+                        {p.label && <p className="text-xs text-muted-foreground">{p.label}{p.note ? ` · ${p.note}` : ''}</p>}
+                      </div>
+                    ))}
                   </div>
-                  <div>
-                    <p className="text-xs text-ivory/70">{p.label}</p>
-                    <p className="font-medium text-ivory">{p.value}</p>
-                    {p.note && <p className="text-xs text-ivory/70 mt-1">{p.note}</p>}
-                  </div>
-                </a>
-              ))}
+                </div>
+              </div>
             </div>
 
-            <a href={CONTACT_EMAIL.href} className="bg-ivory/[0.08] border border-ivory/25 rounded-2xl p-5 flex items-center gap-4 hover:bg-ivory/15 transition">
-              <div className="w-11 h-11 rounded-xl bg-gold/25 flex items-center justify-center">
+            <a href={CONTACT_EMAIL.href} className="bg-white rounded-2xl p-5 border border-border/60 flex items-center gap-4 hover:bg-cream transition text-jade">
+              <div className="w-11 h-11 rounded-xl bg-gold/15 flex items-center justify-center shrink-0">
                 <Icon name="Mail" size={20} className="text-gold" />
               </div>
               <div>
-                <p className="text-xs text-ivory/70">{CONTACT_EMAIL.label}</p>
-                <p className="font-medium text-ivory">{CONTACT_EMAIL.value}</p>
+                <p className="text-xs text-muted-foreground">{CONTACT_EMAIL.label}</p>
+                <p className="font-medium text-jade">{CONTACT_EMAIL.value}</p>
               </div>
             </a>
 
-            <div className="bg-ivory/[0.08] border border-ivory/25 rounded-2xl p-5">
-              <p className="font-medium text-ivory mb-3">Мессенджеры и QR-коды</p>
-              <div className="grid sm:grid-cols-3 gap-4">
+            <div className="bg-white rounded-2xl p-5 border border-border/60">
+              <p className="font-medium text-jade mb-3">Мессенджеры</p>
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
                 {MESSENGERS.map((m) => (
-                  <a key={m.label} href={m.href} className="rounded-2xl border border-ivory/20 p-4 bg-ivory/[0.04] hover:bg-ivory/10 transition flex flex-col gap-3">
-                    <div className="flex items-center gap-3">
-                      <div className="w-9 h-9 rounded-xl bg-gold/25 flex items-center justify-center">
-                        <Icon name={m.icon} size={18} className="text-gold" />
-                      </div>
-                      <div>
-                        <p className="text-sm text-ivory">{m.label}</p>
-                        <p className="text-xs text-ivory/70">{m.value}</p>
-                      </div>
-                    </div>
-                    <div className="rounded-xl bg-white/95 p-3 aspect-square flex items-center justify-center">
+                  <a key={m.label} href={m.href} className="rounded-xl border border-border/60 p-3 hover:bg-cream transition">
+                    <p className="text-sm font-medium text-jade mb-2">{m.label}</p>
+                    <div className="rounded-lg bg-white p-2 aspect-square flex items-center justify-center">
                       <MediaImage src={m.qr} alt={`QR ${m.label}`} className="w-full h-full object-contain" />
                     </div>
-                    <span className="text-xs text-ivory/70">Нажмите, чтобы открыть</span>
                   </a>
                 ))}
               </div>
-            </div>
-
-            <div className="bg-ivory/[0.08] border border-ivory/25 rounded-2xl p-5">
-              <div className="flex items-center gap-2 mb-2"><Icon name="MapPin" size={18} className="text-gold" /><span className="font-medium text-ivory">Адрес</span></div>
-              <p className="text-sm text-ivory/80">Провинция Хэйлунцзян, Хэйхэ, улица Чжунъян, Китай</p>
-              <p className="text-sm text-ivory/80">Координаты: 50.243901, 127.504512</p>
-              <p className="text-sm text-ivory/80 mt-2">г. Хэйхэ, в 700 м от пункта пропуска напротив г. Благовещенск</p>
-            </div>
-            <div className="rounded-2xl overflow-hidden h-48 border border-ivory/25">
-              <iframe title="Карта" className="w-full h-full grayscale" src="https://yandex.ru/map-widget/v1/?ll=127.504512%2C50.243901&z=16&pt=127.504512,50.243901,pm2rdm" />
             </div>
           </Reveal>
         </div>
