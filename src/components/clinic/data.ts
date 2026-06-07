@@ -9,8 +9,9 @@ export const IMAGES = {
 
 // Интерьер клиники (галерея)
 export const GALLERY = [
-    `${IMG}/inside_1.jpg`, `${IMG}/inside_2.jpg`, `${IMG}/inside_3.jpg`, `${IMG}/inside_4.jpg`,
+    `${IMG}/main_video.mp4`, `${IMG}/inside_2.jpg`, `${IMG}/inside_3.jpg`, `${IMG}/inside_4.jpg`,
     `${IMG}/inside_5.jpg`, `${IMG}/inside_6.jpg`, `${IMG}/instruments_1.jpg`, `${IMG}/instruments_2.jpg`,
+    `${IMG}/atmosphere_1.jpg`,  `${IMG}/inside_1.jpg`, `${IMG}/atmosphere_2.jpg`
 ];
 
 // Сертификаты
@@ -28,11 +29,12 @@ export const HOTEL_PHOTOS = [
 
 // Фото довольных пациентов (раздел "Отзывы")
 export const FEEDBACK_PHOTOS = [
-    `${IMG}/feedback_1.jpg`, `${IMG}/feedback_2.jpg`, `${IMG}/feedback_3.jpg`,
+    `${IMG}/feedback_1.jpg`, `${IMG}/feedback_2.jpg`, `${IMG}/feedback_3.jpg`, `${IMG}/feedback_photo_4.jpg`, `${IMG}/feedback_photo_5.jpg`,`${IMG}/feedback_6.jpg`
 ];
 
 // Видео-отзыв пациента
-export const FEEDBACK_VIDEO = `${IMG}/feedback_video.mp4`;
+export const FEEDBACK_VIDEO_1 = `${IMG}/feedback_video.mp4`;
+export const FEEDBACK_VIDEO_2 = `${IMG}/video_feedback_2.mp4`;
 
 // Фолбэки больше не нужны — файлы лежат в проекте
 export const IMAGE_FALLBACK: Record<string, string> = {};
@@ -54,7 +56,7 @@ export const ADVANTAGES = [
         title: 'Новый центр 2026 года',
         text: 'Из-за ежегодного роста числа пациентов в 2026 году мы переехали в просторную новую многопрофильную стоматологию площадью более 3000 м²'
     },
-    {icon: 'Stethoscope', title: '25+ стоматологов', text: 'Опытные врачи с практикой работы с пациентами из России'},
+    {icon: 'Stethoscope', title: 'Высокое качество', text: 'Мы гарантируем высокое качество услуг по доступным ценам, а также предлагаем выгодные скидки: 5% при индивидуальном лечении и 10% при групповом обращении от пяти человек.'},
     {icon: 'Cpu', title: 'Европейское оборудование', text: 'Современная техника ведущих мировых производителей'},
     {icon: 'Languages', title: 'Бесплатный переводчик', text: 'Сопровождение на русском языке на всех этапах'},
     {icon: 'BadgeRussianRuble', title: 'Оплата в рублях', text: 'Удобный расчёт без конвертаций и переплат'},
@@ -94,14 +96,27 @@ export const DENTAL_CATEGORIES = [
         id: 'implant',
         icon: 'Drill',
         title: 'Имплантация',
-        image: `${IMG}/uslugi_3.jpg`,
+        image: `${IMG}/uslugi_3.png`,
         intro: 'Отделение имплантологии оснащено оборудованием KaVo Dental GmbH и имеет большой опыт в проведении операций по имплантации зубов.',
         services: [
-            {name: 'Имплантация «под ключ»', desc: 'Титановый имплант + абатмент + коронка', price: 28000, ru: 65000},
+            {
+                name: 'Наращивание костной ткани',
+                desc: 'Костная пластика при имплантации зубов',
+                price: 0,
+                ru: 20000
+            },
+            {
+                name: 'Имплантация «под ключ»',
+                desc: 'Титановый имплант + абатмент (бесплатно) + коронка',
+                price: 41800,
+                priceMax: 53000,
+                ru: 65000
+            },
             {
                 name: 'Классическая имплантация (имплант)',
                 desc: 'Установка титанового корня под местной анестезией',
-                price: 19000,
+                price: 33000,
+                priceMax: 44000,
                 ru: 45000
             },
         ],
@@ -110,7 +125,7 @@ export const DENTAL_CATEGORIES = [
         id: 'prosthetics',
         icon: 'Layers',
         title: 'Съёмное протезирование',
-        image: `${IMG}/uslugi_4.jpg`,
+        image: `${IMG}/uslugi_4.png`,
         intro: 'Протезы, которые пациент может самостоятельно снимать и устанавливать.',
         services: [
             {
@@ -158,7 +173,7 @@ export const DENTAL_CATEGORIES = [
         ],
     },
     {
-        id: 'therapy',
+        id: 'other',
         icon: 'Stethoscope',
         title: 'Другие стоматологические услуги',
         image: `${IMG}/other.jpg`,
@@ -335,6 +350,16 @@ export const REVIEWS = [
         text: 'Профессиональная команда, новая чистая клиника. Косметологию тоже здесь делала — результатом очень довольна.',
         rating: 5
     },
+    {
+        name: 'Александр, Москва',
+        text: 'Я очень доволен результатом! Зубы выглядят абсолютно естественно, а цена в несколько раз ниже, чем в России.',
+        rating: 5
+    },
+    {
+        name: 'Елена, Санкт-Петербург',
+        text: 'Лечение прошло быстро, качественно и совсем не больно. Очень рекомендую эту клинику!',
+        rating: 5
+    },
 ];
 
 // Контакты-ссылки
@@ -403,6 +428,7 @@ export const EMAILJS_CONFIG = {
 
 // Все стоматологические услуги с ценами — для калькулятора (price — Китай, ru — Россия)
 export const PRICES = [
+    {name: 'Наращивание костной ткани', price: 0, ru: 20000},
     {name: 'Лечение кариеса', price: 1000, ru: 5500},
     {name: 'Лечение эрозии эмали', price: 2000, ru: 5000},
     {name: 'Ультразвуковая чистка зубов', price: 1800, ru: 6000},
@@ -410,8 +436,8 @@ export const PRICES = [
     {name: 'Металлокерамическая коронка', price: 2600, ru: 6500},
     {name: 'Циркониевая коронка', price: 8800, ru: 22000},
     {name: 'Виниры и люминиры', price: 10000, ru: 28000},
-    {name: 'Имплантация «под ключ»', price: 28000, ru: 65000},
-    {name: 'Классическая имплантация (имплант)', price: 19000, ru: 45000},
+    {name: 'Имплантация «под ключ»', price: 41800, ru: 73000},
+    {name: 'Классическая имплантация (имплант)', price: 33000, ru: 55000},
     {name: 'Бюгельный протез', price: 18600, ru: 42000},
     {name: 'Нейлоновый протез', price: 28600, ru: 60000},
     {name: 'Акриловый протез', price: 9000, ru: 22000},

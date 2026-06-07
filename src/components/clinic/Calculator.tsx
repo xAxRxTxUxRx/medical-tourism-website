@@ -23,7 +23,12 @@ export default function Calculator() {
     [qty],
   );
 
-  const fmt = (n: number) => n.toLocaleString('ru-RU') + ' ₽';
+  const fmt_save = (n: number) => n.toLocaleString('ru-RU') + ' ₽';
+
+  const fmt = (n: number) => {
+    if (n == 0) return 'Бесплатно'
+    else return n.toLocaleString('ru-RU') + ' ₽';
+  }
 
   return (
     <div className="grid lg:grid-cols-5 gap-6">
@@ -32,7 +37,7 @@ export default function Calculator() {
           <div key={o.name} className="glass-card rounded-2xl p-4 flex items-center justify-between gap-4">
             <div className="min-w-0">
               <p className="font-medium text-jade truncate">{o.name}</p>
-              <p className="text-sm text-muted-foreground">от {fmt(o.price)}</p>
+              <p className="text-sm text-muted-foreground">{fmt(o.price)}</p>
             </div>
             <div className="flex items-center gap-3 shrink-0">
               <button onClick={() => set(o.name, -1)} className="w-9 h-9 rounded-full border border-gold/40 text-jade hover:bg-gold/10 transition flex items-center justify-center">
@@ -68,7 +73,7 @@ export default function Calculator() {
             </div>
             <div className="mt-6 rounded-2xl bg-gold/20 border border-gold/40 p-5 text-center">
               <p className="text-xs uppercase tracking-widest opacity-80 mb-1">Ваша экономия</p>
-              <p className="font-display text-4xl text-gold">{fmt(totals.save)}</p>
+              <p className="font-display text-4xl text-gold">{fmt_save(totals.save)}</p>
             </div>
             <p className="text-xs opacity-70 mt-4 text-center">Итоговая стоимость определяется после осмотра и КТ. Оплата в рублях.</p>
             <a href="#zayavka" className="mt-6 block text-center bg-ivory text-jade rounded-full py-3 font-semibold hover:bg-cream transition">
