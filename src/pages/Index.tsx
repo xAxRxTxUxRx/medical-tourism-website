@@ -755,9 +755,7 @@ export default function Index() {
                             <div className="flex items-center gap-2 mb-2"><Icon name="MapPin" size={18}
                                                                                 className="text-gold"/><span
                                 className="font-medium text-jade">Адрес</span></div>
-                            <p className="text-sm text-muted-foreground">Провинция Хэйлунцзян, Хэйхэ, улица Чжунъян
-                                меняй Культуры,
-                                Китай</p>
+                            <p className="text-sm text-muted-foreground">Провинция Хэйлунцзян, Хэйхэ, Улица Вэньхуа, Китай</p>
                             <p className="text-sm text-muted-foreground">Координаты: 50.243901, 127.504512</p>
                             <p className="text-sm text-muted-foreground mt-2">г. Хэйхэ, в 700 м от пункта пропуска
                                 напротив г. Благовещенск</p>
