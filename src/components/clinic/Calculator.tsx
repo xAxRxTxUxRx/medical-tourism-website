@@ -35,9 +35,11 @@ export default function Calculator() {
       <div className="lg:col-span-3 space-y-3 max-h-[560px] overflow-y-auto pr-1">
         {PRICES.map((o) => (
           <div key={o.name} className="glass-card rounded-2xl p-4 flex items-center justify-between gap-4">
-            <div className="min-w-0">
-              <p className="font-medium text-jade truncate">{o.name}</p>
-              <p className="text-sm text-muted-foreground">{fmt(o.price)}</p>
+            <div className="min-w-0 flex-1">
+              <p className="font-medium text-jade break-words whitespace-normal leading-tight">
+                {o.name}
+              </p>
+              <p className="text-sm text-muted-foreground mt-1">{fmt(o.price)}</p>
             </div>
             <div className="flex items-center gap-3 shrink-0">
               <button onClick={() => set(o.name, -1)} className="w-9 h-9 rounded-full border border-gold/40 text-jade hover:bg-gold/10 transition flex items-center justify-center">

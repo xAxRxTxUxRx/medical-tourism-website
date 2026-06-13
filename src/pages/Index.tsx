@@ -566,10 +566,9 @@ export default function Index() {
                                 <video
                                     src={item}
                                     className="w-full h-full object-cover"
-                                    autoPlay
-                                    muted
                                     loop
                                     playsInline
+                                    controls
                                 />
                             ) : (
                                 <MediaImage
